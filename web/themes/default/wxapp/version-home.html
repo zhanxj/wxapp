@@ -1,0 +1,52 @@
+{template 'common/header'}
+<div class="welcome-container" id="js-wxapp-home-welcome" ng-controller="WxappWelcomeCtrl" ng-cloak>
+	<div class="panel we7-panel wxapp-target">
+		<div class="panel-heading">昨日关键指标</div>
+		<div class="panel-body we7-padding-vertical">
+			<div class="col-sm-3 text-center">
+				<div class="title">打开次数</div>
+				<div>
+					<span class="today" ng-bind="daily_visittrend.yesterday.session_cnt">100</span>
+				</div>
+			</div>
+			<div class="col-sm-3 text-center">
+				<div class="title">访问次数</div>
+				<div>
+					<span class="today" ng-bind="daily_visittrend.yesterday.visit_pv">2000</span>
+				</div>
+			</div>
+			<div class="col-sm-3 text-center">
+				<div class="title">访问人数</div>
+				<div>
+					<span class="today" ng-bind="daily_visittrend.yesterday.visit_uv">10</span>
+				</div>
+			</div>
+			<div class="col-sm-3 text-center">
+				<div class="title">新用户数</div>
+				<div>
+					<span class="today" ng-bind="daily_visittrend.yesterday.visit_uv_new">101</span>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="panel we7-panel wxapp-procedure hidden">
+		<div class="panel-body">
+			<div class="procedure-top">
+				<a href="http://www.we7.cc/forum.php?mod=viewthread&tid=24104&fromuid=56310 " class="btn btn-primary pull-right">马上了解</a>
+				<span class="title-lg">小程序</span>
+				<span class="title-md">使用流程和开发简述</span>
+			</div>
+			<div class="procedure-diagram">
+				<img src="./resource/images/wxapp-procedure-diagram.png" alt="" />
+			</div>
+		</div>
+	</div>
+
+</div>
+<script>
+	angular.module('wxApp').value('config', {
+		notices: {php echo !empty($notices) ? json_encode($notices) : 'null'},
+	});
+	angular.bootstrap($('#js-wxapp-home-welcome'), ['wxApp']);
+</script>
+{template 'common/footer'}

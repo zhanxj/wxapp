@@ -1,0 +1,110 @@
+{template 'common/header'}
+<div class="alert we7-page-alert">
+	<p><i class="wi wi-info-sign"></i>可以把之前公众号应用的会员、数据等信息同步至小程序应用当中.</p>
+	<p><i class="wi wi-info-sign"></i>从公众号应用同步的会员信息,在小程序应用登录时会被判断为新用户,此处无法识别为同一会员.</p>
+</div>
+<div class="we7-page-title">关联设置</div>
+<table class="table we7-table table-hover vertical-middle">
+	<col width="180px" />
+	<col width="140px"/>
+	<col width="140px" />
+	<tr>
+		<th class="text-left">关联设置</th>
+		<th class="text-left">公众号</th>
+		<th class="text-right">操作</th>
+	</tr>
+	{if !empty($version_info['modules'])}
+	{loop $version_info['modules'] $module}
+	<tr>
+		<td class="text-left">
+			<img src="{$module['logo']}" style="width:50px;height:50px;">
+			{$module['title']}
+		</td>
+		<td class="text-left">
+			{if !empty($module['account'])}
+				<img src="{php echo tomedia('headimg_'.$module['account']['acid'].'.jpg')}?time={php echo time()}" style="width:50px;height:50px;">
+				<span>{$module['account']['name']}</span>
+			{else}
+				<span>暂无</span>
+			{/if}
+		</td>
+		<td>
+			<div class="link-group">
+				{if !empty($module['account'])}
+					{if $module['wxapp_support'] == 2 && $module['app_support'] == 2}
+						<a href="javascript:;" data-module="{$module['name']}" class="js-select-link-account">修改</a>
+					{/if}
+						<a href="{php echo url('wxapp/version/module_unlink_uniacid', array('version_id' => $version_info['id']))}">删除</a>
+				{else}
+					{if $module['wxapp_support'] == 2 && $module['app_support'] == 2}
+						<a href="javascript:;" data-module="{$module['name']}" class="js-select-link-account">添加</a>
+					{/if}
+				{/if}
+			</div>
+		</td>
+	</tr>
+	{/loop}
+	{/if}
+</table>
+<div class="modal fade" id="show-account" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog we7-modal-dialog" style="width:800px">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title">选择公众号(点击选择)</h4>
+			</div>
+			<div class="modal-body">
+				<div class="alert we7-page-alert">
+					<p><i class="wi wi-info-sign"></i>小程序应用,必须同时支持公众号应用</p>
+					<p><i class="wi wi-info-sign"></i>公众号必须安装有公众号应用.</p>
+					<p><i class="wi wi-info-sign"></i>必须有小程序和公众号的主管理员权限</p>
+				</div>
+				<div class="panel-body we7-padding">
+					<div class="row js-show-account-content">
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('.js-select-link-account').click(function(){
+		var modulename = $(this).data('module');
+		$.getJSON('./index.php?c=wxapp&a=version&do=search_link_account&module_name='+$(this).data('module'), function(data){
+			if (data.message.message) {
+				$('.js-show-account-content').empty();
+				for (i in data.message.message) {
+					var html =  '<div class="col-sm-2 text-center we7-margin-bottom">'+
+								'	<a href="javascript:;" class="js-select-uniacid" data-module="'+modulename+'" data-uniacid="'+data.message.message[i].uniacid+'">'+
+								'		<img src="'+data.message.message[i].logo+'" alt="" style="width:50px;height:50px;">'+
+								'		<p class="text-over">'+data.message.message[i].name+'</p>'+
+								'	</a>'+
+								'</div>';
+					$('.js-show-account-content').append(html);
+				}
+				if ($('.js-show-account-content').html()=='') {
+					var html = '没有可以关联的公众号';
+					$('.js-show-account-content').html(html);
+				}
+			}
+			$('.js-select-uniacid').click(function(){
+				$.post('./index.php?c=wxapp&a=version&do=module_link_uniacid&module_name='+modulename, {
+					'submit' : 'yes', 
+					'token' : '{$_W['token']}', 
+					'module_name' : modulename,
+					'uniacid' : $(this).data('uniacid'),
+					'version_id' : '{$version_id}',
+				}, function(data){
+					if (data.message.errno == 0) {
+						util.message('关联成功', 'refresh', 'success')
+					} else {
+						util.message(data.message.message);
+					}
+				}, 'json');
+			});
+			$('#show-account').modal();
+		});
+	});
+</script>
+{template 'common/footer'}
