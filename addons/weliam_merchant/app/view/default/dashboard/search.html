@@ -1,0 +1,61 @@
+<style>
+.now-position{line-height: 34px;float: left;}
+.search{border: none;}
+.search-title{display: inline-block;padding: 10px 0;margin: 5px .5rem;font-size: .8rem;font-weight: 600;}
+.search-tips{padding: 0 .25rem;margin: 0;}
+.search-tips li{margin: .2rem .4rem;list-style-type: none;float: left;}
+.search-btn{width: 50%;float: left;}
+.comment1{font-size: 14px;width: 15%;float: left;text-align: center;}
+.comment2{font-size: 14px;width: 10%;float: left;}
+.search-header{height: 48px;background-color: #06C1AE;color: #fff;}
+.our-input{margin: 2px auto;width: 100%;height: 30px;line-height: 30px;border: none;border-radius: 20px;background-color: #fff;}
+.our-input span{color: #009F95;font-size: 13px;word-break:keep-all;}
+.city-logo{line-height: 34px;font-size: 0.7rem;margin-left: 0;}
+#search-btn{display: block;z-index: 999;}
+.popup-search{position: fixed;top: 0;left: 100%;width: 100%;height: 100%;z-index: 9999;background-color: #fff;-webkit-transition: left .3s ease;-ms-transition: left .3s ease;-moz-transition: left .3s ease;-o-transition: left .3s ease;transition: left .3s ease;}
+</style>
+<div class="searchbar search-header">
+  	<div class="now-position" onclick="location.href='{php echo app_url('area/region/select_region')}'" style="text-align: center;width: 18%;">
+		<span style="max-width: 2.8rem;display: inline-block;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{$_W['areaname']}</span>
+  	</div>
+  	<div class="now-position" onclick="location.href='{php echo app_url('area/region/select_region')}'" style="text-align: left;width: 7%;">
+		<span class="icon iconfont icon-unfold city-logo" style="font-size: .7rem;"></span>
+  	</div>
+    <div class="search-input search-btn"> 
+    	<div class="our-input">
+    		<span class="icon iconfont icon-search" style="color: #009E94;font-size: 14px;margin-left: 8px;"></span>
+    		<span style="margin-left: 40px;">输入关键字..</span>
+    	</div>
+    </div>
+    <div class="comment1" onclick="wx.scanQRCode();">
+    	<span class="icon iconfont icon-scan" style="font-size: 24px;line-height: 1.45;"></span>
+    </div>
+    <div class="comment2" onclick="location.href='{php echo app_url("dashboard/home/noticelist")}'">
+    	<span class="icon iconfont icon-notice" style="font-size: 24px;line-height: 1.45;"></span>
+    </div>
+</div>
+<script>
+$(function () {
+	/*打开搜索popup*/
+	$(document).on('click','.search-btn', function () {
+	  $(".popup-search").css({
+	  	"left":"0"
+	  })
+	});
+	$(document).on('click','.my-close-popup', function () {
+	  $(".popup-search").css({
+	  	"left":"100%"
+	  })
+	});
+	$("input[name='keywords']").focusin(function () {
+		$(this).removeAttr('placeholder');
+	});
+	$("input[name='keywords']").focusout(function () {
+		$(this).attr('placeholder','输入关键字...');
+	});
+	$("#search_clear").click(function () {
+		$('#search_input').val('');
+		$('#search_input').attr('placeholder','输入关键字...');
+	});
+});
+</script>

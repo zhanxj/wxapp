@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.012wz.com" versionCode="0.6">
+	<application setting="false">
+		<name><![CDATA[智慧城市O2O]]></name>
+		<identifie><![CDATA[weliam_merchant]]></identifie>
+		<version><![CDATA[1.2.2.2]]></version>
+		<type><![CDATA[biz]]></type>
+		<ability><![CDATA[智慧城市O2O]]></ability>
+		<description><![CDATA[智慧城市O2O]]></description>
+		<author><![CDATA[悟空源码]]></author>
+		<url><![CDATA[http://www.5kym.com]]></url>
+	</application>
+	<platform>
+		<subscribes>
+		</subscribes>
+		<handles>
+			<message type="text" />
+			<message type="image" />
+			<message type="voice" />
+			<message type="location" />
+			<message type="subscribe" />
+			<message type="qr" />
+			<message type="trace" />
+			<message type="click" />
+		</handles>
+		<rule embed="false" />
+		<card embed="false" />
+	</platform>
+	<bindings>
+		<menu>
+			<entry title="后台管理" do="dashboard" state="" direct="false" />
+		</menu>
+	</bindings>
+	<install><![CDATA[install.php]]></install>
+	<uninstall><![CDATA[]]></uninstall>
+	<upgrade><![CDATA[upgrade.php]]></upgrade>
+</manifest>

@@ -1,0 +1,52 @@
+{php include wl_template('common/header');}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#">代理列表</a></li>
+</ul>
+<div class="main panel panel-default">
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th style="width:100px;text-align:center;">代理名称</th>
+					<th style="width:100px;text-align:center;">联系人</th>
+					<th style="width:100px; text-align:center;">代理分组</th>
+					<th style="width:150px; text-align:center;">代理时间</th>
+					<th style="width:60px; text-align:center">是否到期</th>
+					<th style="width:60px; text-align:center">是否启用</th>
+					<th style="width:200px; text-align:center">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $agents $agent}
+				<tr>
+					<td class="text-center" data-toggle="tooltip" data-placement="top" title="{$agent['agentname']}">
+						{$agent['agentname']}
+					</td>
+					<td class="text-center">
+						{$agent['realname']}<br />{$agent['mobile']}
+					</td>
+					<td class="text-center">
+						<label class='label'>{$agent['groupname']}</label>
+					</td>
+					<td class="text-center" data-toggle="tooltip" data-placement="top" title="{php echo date('Y-m-d',$agent['starttime'])}至{php echo date('Y-m-d',$agent['endtime'])}">
+						{php echo date('Y-m-d',$agent['starttime'])}至{php echo date('Y-m-d',$agent['endtime'])}
+					</td>
+					<td class="text-center">
+						{if $agent['endtime'] < time()}<label class='label label-danger'>到期</label>{else}<label class='label label-success'>未到期</label>{/if}
+					</td>
+					<td class="text-center">
+						{if $agent['status']==1}<label class='label label-success'>开启</label>{else}<label class='label label-default'>关闭</label>{/if}
+					</td>
+					<td class="text-center" style="text-align: center;">
+                   		 	<a class="btn btn-default" href="{php echo web_url('area/areaagent/agentEdit', array('id' => $agent['id']));}" title="编辑">编辑</a> -
+                    		<a class="btn btn-default" href="{php echo web_url('area/areaagent/agentDetail', array('id' => $agent['id']));}" title="详情">记录</a> -
+                    		<a class="btn btn-danger" href="{php echo web_url('area/areaagent/manage', array('id' => $agent['id']));}" target="_blank" title="管理">管理</a>
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+	</div>
+</div>
+{$pager}
+{php include wl_template('common/footer');}

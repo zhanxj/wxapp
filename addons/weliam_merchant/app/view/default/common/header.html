@@ -1,0 +1,26 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{$pagetitle}</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="stylesheet" href="{URL_APP_RESOURCE}components/weui/weui.css">
+    <link rel="stylesheet" href="{URL_APP_RESOURCE}components/light/light7.min.css">
+  	<link rel="stylesheet" href="{URL_APP_RESOURCE}components/icon/iconfont.css">
+    <link rel="stylesheet" href="{URL_APP_RESOURCE}css/common.css">
+    <link rel="stylesheet" href="{URL_APP_RESOURCE}components/swiper/swiper.min.css">
+    {php echo register_jssdk();}
+    <script type='text/javascript' src='{URL_APP_RESOURCE}js/jquery.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='{URL_APP_RESOURCE}js/global.js' charset='utf-8'></script>
+		<script type='text/javascript' src='{URL_APP_RESOURCE}components/light/light7.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='{URL_APP_RESOURCE}components/swiper/swiper.min.js' charset='utf-8'></script>
+		<script type='text/javascript' src='{URL_APP_RESOURCE}components/layer_mobile/layer.js' charset='utf-8'></script>
+		<script type='text/javascript' src='http://webapi.amap.com/maps?v=1.3&key={if !empty($_W['wlsetting']['api']['gdkey'])}{$_W['wlsetting']['api']['gdkey']}{else}390c8979afd6cf1bc10d672161b9e039{/if}' charset='utf-8'></script>
+		<script type='text/javascript' src='{URL_APP_RESOURCE}js/laytpl.js' charset='utf-8'></script>
+		<script type='text/javascript' src='{URL_APP_RESOURCE}js/common.js' charset='utf-8'></script>
+		<script type='text/javascript' src='{URL_APP_RESOURCE}js/weixinJs.js' charset='utf-8'></script>
+</head>
+<body>

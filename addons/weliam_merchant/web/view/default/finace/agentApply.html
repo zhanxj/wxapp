@@ -1,0 +1,89 @@
+{php include wl_template('common/header');}
+<ul class="nav nav-tabs">
+	<li {if $_GPC['type']=='vip'} class="active"{/if} ><a href="{php echo web_url('finace/wlCash/cashApplyAgent',array('type'=>'vip'))}">VIP充值提现申请</a></li>
+	<li  {if $_GPC['type']=='half'}class="active"{/if} ><a href="{php echo web_url('finace/wlCash/cashApplyAgent',array('type'=>'half'))}">五折卡充值提现申请</a></li>
+</ul>
+<div class="main">
+	<form action="" method="post" class="form-horizontal form" enctype="multipart/form-data">
+ 		<div class="panel-body">
+         <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">当前可结算订单数量</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-control-static">{$num}</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">可结算订单支付总金额</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-control-static">{$money}</div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">系统提成</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-control-static">{if $_GPC['type']=='vip'}{php echo sprintf("%.4f", $p['vippercent'])}{else}{php echo sprintf("%.4f", $p['halfpercent'])}{/if}%</div>
+            </div>
+        </div>
+        <div class="form-group" id="percentMoney" style="display: none;">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">佣金</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-control-static"></div>
+            </div>
+        </div>
+        <div class="form-group" id="money" style="display: none;">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label">结算金额</label>
+            <div class="col-sm-9 col-xs-12">
+                <div class="form-control-static"></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-2 col-md-2 col-lg-2 control-label">输入结算订单数量</label>
+            <div class="col-sm-8 col-lg-3 col-xs-12">
+                <input class="form-control" name="num" id="num" type="text" value="{$_GPC['num']}" placeholder="">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-12 col-sm-3 col-md-2 control-label"></label>
+            <div class="col-sm-9 col-xs-12">
+                    <input type="hidden" name="type" value="{$_GPC['type']}" id="type">
+                    <input type="hidden" name="token" value="{$_W['token']}">
+                    <input name="jisuan" type="button" value="计算" class="btn btn-primary span2" id="jisuan">
+                    <input name="submit" type="button" value="确定申请" class="btn btn-primary span2" id="submit">
+            </div>
+        </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+var money = num = ids = 0;
+var type = $('#type').val();
+$('#jisuan').click(function(){
+	var n = $('#num').val();
+		if(isNaN(num)){alert("输入错误");return false;}
+		$.post("{php echo web_url('finace/wlCash/cashApplyAgent')}",{num:n,type:type},function(d){
+          	if(!d.errno){
+          		  ids = d.ids;
+          		  money = d.money;
+          		  num = d.num;
+          		  $('#money').find('.form-control-static').html(d.money);
+          		  $('#percentMoney').find('.form-control-static').html(d.percentMoney);
+          		  $('#money').show();
+          		  $('#percentMoney').show();
+          		  
+          	}
+          },"json");	
+});
+ $('#submit').click(function(){
+  	if(money > 0 && num > 0){
+  		if(confirm("申请结算："+num+"个订单，"+money+"元？")){
+  			$.post("{php echo web_url('finace/wlCash/cashApplyAgent')}",{type:type,ids:ids,num:num,money:money},function(d){
+			          	alert(d.message);
+			          	location.href = "{php echo web_url('finace/wlCash/cashApplyAgentRecord')}";
+			    },"json");
+  		}
+  	}else{
+  		 alert('请输入正确得订单数量，并计算！');
+  	}
+  });
+</script>
+{php include wl_template('common/footer');}

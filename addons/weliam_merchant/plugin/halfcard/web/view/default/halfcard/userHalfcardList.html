@@ -1,0 +1,259 @@
+{php include wl_template('common/header');}
+<style type='text/css'>
+.trbody td{text-align: center;vertical-align:top;border-left:1px solid #ccc;border-bottom: 1px solid #ddd;}
+.order-rank img{width:16px;height:16px;}
+.js-remark,.js-admin-remark{word-break:break-all;overflow:hidden;background: #FDEEEE;color: #ED5050;padding: 5px 10px;}
+td.goods-info{position:relative;padding-left:60px;}
+.goods-info .img{position:absolute;top:50%;margin-top:-25px;background: url({IMAGE_LOADING}
+) center center no-repeat;width:50px;height:50px;}
+.goods-info span{white-space: nowrap;overflow: hidden;text-overflow: ellipsis;display: block;}
+.status-text{cursor:pointer;}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{border-top: 1px solid rgba(221, 221, 221, 0);}
+.col-md-1{padding-right: 0px;}
+.all-tips{margin-left: 65px;}
+span.effect-time{font-size: 12px;display: block;font-weight: 500;}
+.row.row-fix, .form-group.form-group-fix{margin-left: -15px;margin-right: -15px;width: 500px;}
+button.btn.btn-default.daterange.daterange-date{float: left;margin-left: 234px;position: absolute;z-index: 100;}
+#sel_child{z-index: 10;width: 200px;position: absolute;display: none;}
+.show1{display: block;}
+.hide1{display: none;}
+.daterange-date{display: none;}
+.sty{display: block;width: 100%;font-size: 13px;height: 46px;overflow: hidden;white-space: nowrap;line-height: 46px;text-overflow: ellipsis;text-align: center;}
+.spe{display: inline-block;text-align: center;display: block;height: 33px;margin-left: -12px;padding-top: 0px;line-height: 33px;}
+.table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{white-space: normal;}
+span.ppp{text-align: center;display: inline-block;font-size: 14px;width: 100%;overflow: hidden;text-overflow: ellipsis;color: #e43;}
+select#sel_parent{z-index: 1000;}
+.nickname{margin-left: 94px;height: 34px;width: 200px;display: block;}
+.col-xs-12.col-sm-6.col-md-6.col-lg-6{z-index: 9999;}
+.start-time{font-size: 12px;}
+.end-time{font-size: 12px;}
+</style>
+	<div class="panel">
+	    <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form" id="form1">
+               	<input type="hidden" name="c" value="site" />
+	            <input type="hidden" name="a" value="entry" />
+	            <input type="hidden" name="m" value="weliam_merchant" />
+	            <input type="hidden" name="p" value="halfcard" />
+				<input type="hidden" name="ac" value="halfcard_web" />
+				<input type="hidden" name="do" value="userhalfcardlist" />
+                <div class="form-group">
+                    <div class="col-md-2" id="double">
+                        {php echo tpl_form_field_category_2level('sel',$sel1, $sel2, $_GPC['sel']['parentid'], $_GPC['sel']['childid']);}
+                    </div>
+                    
+                     <div class="col-md-2 ">
+                	   	{if $_GPC['sel']['parentid']==2}
+                	   	<input type="text" name="keyword" value="{$_GPC['keyword']}" placeholder="请输入查询内容" class="nickname" style="display: block;" autocomplete="off" id="box2"/>
+               
+                	   	{else}
+                	   	<input type="text" name="keyword" value="{$_GPC['keyword']}" placeholder="请输入查询内容" class="nickname"  autocomplete="off" id="box1"/>
+                	   	{/if}
+                    </div>
+                    <div class="col-md-6 pull-right">
+						<div class="input-group">
+							<span class="input-group-addon" id="search" style="border: 1px solid #999;width: 90px;cursor: pointer;display: block;margin-left: 29rem; border-radius: 3px;" >搜索</span>
+						</div>
+					</div>
+				</div>
+            </form>
+	    </div>
+	</div>
+	<script type="text/javascript">
+		$("#search").click(function(){
+			$('#form1')[0].submit();
+		});
+	</script>
+	<div class="order-list">
+		<div class="panel-body table-responsive collapse in" id="order-template-item-4" style="padding: 0;">
+			<table class="table table-bordered">
+				<thead style="background-color: #FFFFFF;">
+					<tr>
+						<th style="width:40px;" class="text-center"><input type="checkbox" onclick="var ck = this.checked;$(':checkbox').each(function(){this.checked = ck});" /></th>
+						<th style="width:180px;text-align:center;">五折卡信息</th>
+						<th style="width:150px ;text-align: center;">商户信息</th>
+						<th style="width:150px;text-align: center;">用户信息</th>
+						<th style="width:100px; text-align:center;">创建时间</th>
+						<th style="width:100px; text-align:center;">核销时间</th>
+						<th style="width:80px; text-align: center;">验证码</th>
+				
+					</tr>
+				</thead>
+				
+			</table>
+		</div>
+		{loop $halfcard $y $item}
+		<div class="panel panel-default">
+			<div class="panel-body table-responsive" style="padding: 0px;">
+				<table class="table table-bordered">
+					<tbody >
+						<tr>
+							<td class="text-center" style="width:40px; height: auto;">
+								<center><input type="checkbox" name="checkbox[]" class="checkbox" value="{$item['id']}" /></center>
+							</td>
+							<!--五折卡内容-->
+							<td class="goods-info line-feed" style="width:180px;padding-left: 10px;">
+								<div class="img"><img width="50" height="50" class="oscrollLoading" data-url="{php echo tomedia($item['logo'])}" height="50" width="50" ></div>
+								<div class="all-tips">
+									<p class="" style="font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;">{$item['title']}</p>
+								</div>
+							</td>
+							<!--商户信息-->
+							<td class="text-center" style="width:150px;height:60px;font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif ;">
+								<p>{$item['storename']}</p>
+							</td>
+							<!--用户信息-->
+							<td class="goods-info line-feed" style="width:150px; padding-left: 10px;font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif ;">
+							<div class="img"><img width="50" height="50" class="oscrollLoading" data-url="{php echo tomedia($item['avatar'])}" height="50" width="50" ></div>
+								<div class="all-tips">
+									<span class="" style="font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif ;">{$item['nickname']}</span>
+									<span class="" style="font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif ;">{$item['mobile']}</span>
+								</div>	
+							</td>
+							<!--创建时间-->
+							<td class="text-center" style="width:100px;font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;">
+								{php echo date('Y-m-d H:i:s',$item['createtime'])}						
+							</td>
+							<!--核销时间-->
+							<td class="text-center" style="width:100px;font-family: "Arial","Microsoft YaHei","黑体","宋体",sans-serif;" >
+								{if $item['hexiaotime']}
+								{php echo date('Y-m-d H:i:s',$item['hexiaotime'])}						
+								{else if date('Ymd') > $item['date']  }
+								<span class="label label-danger">已过期</span>
+								<span style="position: relative;top: 5px;" class="label label-danger">{php echo substr($item['date'],0,4).' - '.substr($item['date'],4,2).' - '.substr($item['date'],-2,2) }</span>
+								{else}
+								<span class="label label-primary">待消费</span>
+								<span style="position: relative;top: 5px;" class="label label-primary">{php echo substr($item['date'],0,4).' - '.substr($item['date'],4,2).' - '.substr($item['date'],-2,2) }</span>
+								{/if}
+							</td>
+							<!--验证码-->
+							<td class="text-center" style="width: 80px;">
+								{$item['qrcode']}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		{/loop}
+		{$pager}
+		<div id="de1" style="margin-top: 15px;">
+			<a href="javascript:;" class="btn btn-default min-width js-batch js-delete">删除选中记录</a>
+		</div>
+</div>
+<script type="text/javascript">
+	require(['jquery', 'util'], function($, util){
+		$('.js-copy').each(function(){
+			var id=$(this).attr('data-id');
+			util.clip($("#js-copy"+id), $(this).attr('data-url'));
+		});
+	});
+</script>
+
+<script type="text/javascript">
+	$('#output').click(function(){
+		var orderType = '{$_GPC['orderType']}';
+		var status = '{$_GPC['status']}';
+		var paytype = '{$_GPC['pay_type']}';
+		var keywordtype = '{$_GPC['keywordtype']}';
+		var keyword = '{$_GPC['keyword']}';
+		var timetype = '{$_GPC['timetype']}';
+		var times = "{$_GPC['time']['start']}";
+		var timee = "{$_GPC['time']['end']}";
+		location.href = "{php echo web_url('halfcard/order/output')}&orderType="+orderType+"&status="+status+"&paytype="+paytype+"&keywordtype="+keywordtype+"&keyword="+keyword+"&timetype="+timetype+"&times="+times+"&timee="+timee;
+	});
+	$(function(){
+		$('[name="rank_all"]').click(function() {
+			var checked = this.checked;
+			$('.js-rank').find('input:checkbox').each(function() {
+				this.checked = checked;
+			});
+		});
+		$('#export').click(function() {
+			if ($('[name="selecttime[start]"]').val() == '') {
+				alert('请选择下单时间');
+				$(this).focus();
+				return false;
+			};
+			$(this).attr('type', 'submit').submit();
+		});
+		
+		$('.order-rank').each(function(){
+			o.rank(this);
+		});
+		
+		$(".oscrollLoading").scrollLoading();
+		var $pop = null;
+		$('.goods-info').hover(function() {
+			var obj = this;
+			var img = $(this).find('img').attr('src');
+			var $pop = util.popover(obj, function($popover, obj) {
+				obj.$popover = $popover;
+			}, '<div><img src="'+ img+'" style="max-width:200px; max-height:200px;"></div>');
+		}, function() {
+			this.$popover.remove();
+		});
+
+		
+		//删除用户记录
+		$('#de1').delegate('.js-delete','click',function(e){
+			e.stopPropagation();
+			var order_ids = [];
+			var $checks=$('.checkbox:checkbox:checked');
+			$checks.each(function() {
+				if (this.checked) {
+					order_ids.push(this.value);
+				};
+			});
+				var $this = $(this);
+				var ids = order_ids;
+				//alert(ids);
+				
+				util.nailConfirm(this, function(state) {
+				if(!state) return;
+					$.post("{php echo web_url('halfcard/halfcard_web/deleteHalfcardRecord')}", { ids : ids }, function(data){
+						if(!data.errno){
+						util.tips("删除成功！");
+						location.reload();
+						};
+					}, 'json');
+				}, {html: '确认删除?'});
+			});
+		});
+		
+//转换日期
+	var dt=$('.date1').text().replace(/^\s+|\s+$/g, "");
+	var yy=dt.slice(0,4);
+	var mm=dt.slice(4,6);
+	var dd=dt.slice(6,8);
+	var str=(yy+'-'+mm+'-'+dd).toString();
+	$('.date1').text(str);
+
+//二级联动切换
+$('#sel_parent').click(function(){
+
+if(this.value!=0){
+		$('.daterange-date').hide();
+		$('#sel_child').hide();
+		$(".nickname").removeAttr("style");
+		$('.nickname').show();
+}
+else{
+		$('.daterange-date').hide();
+		$('.nickname').hide();
+		$('#sel_child').hide();	
+		$('#sel_child').attr("display","block");
+}
+//alert(this.value);
+//if(this.value==0)
+//		$('#sel_child').hide();
+})
+
+
+
+
+</script>
+
+
+
+{php include wl_template('common/footer');}

@@ -1,0 +1,58 @@
+
+{php include wl_template('common/header');}
+<div class="panel panel-default">
+	<div class="table-responsive">
+		<table class="table table-hover" style="min-width: 300px;">
+			<thead class="navbar-inner">
+				<tr>
+					<th class="col-sm-4">申请信息</th>
+					<th class="col-sm-2">申请金额</th>
+					<th class="col-sm-2">总提成</th>
+					<th class="col-sm-2">代理提成<br>系统提成</th>
+					<th class="col-sm-4">提现</th>
+					<th class="col-sm-2">申请时间</th>
+					<th class="col-sm-2">操作时间</th>
+					<th class="col-sm-3">状态</th>
+					<th class="col-sm-4 text-center">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				{loop $list  $merchant}
+				<tr>
+					<td>{if $merchant['type']==1}商家：{$merchant['sName']}{else}代理：{$merchant['aName']}{/if}</td>
+					<td>{if $merchant['type']==1}{$merchant['sapplymoney']}{else}{$merchant['aapplymoney']}{/if}元</td>
+					<td>{if $merchant['type']==1}{$merchant['spercent']}{else}{$merchant['apercent']}{/if}%</td>
+					<td>{if $merchant['type']==1}{$merchant['apercent']}%<br>{php echo sprintf("%.4f", $merchant['spercent'] - $merchant['apercent'])}%{else}0.0000%<br>{$merchant['apercent']}%{/if}</td>
+					<td>{if $merchant['type']==1}<label class="label label-default label-danger">商家销售提现</label>{/if}
+						{if $merchant['type']==2}<label class="label label-default label-danger">VIP申请提现</label>{/if}
+						{if $merchant['type']==3}<label class="label label-default label-danger">五折卡申请提现，待结算</label>{/if}<br><br>{if $merchant['settletype']==1}<label class="label label-default label-success">手动处理{elseif $merchant['settletype']==2}<label class="label label-default label-info">微信零钱{else}<label class="label label-default">未结算{/if}</label>
+					</td>
+					<td>{php echo date('Y-m-d',$merchant['applytime'])}<br>{php echo date('H:i:s',$merchant['applytime'])}</td>
+					<td>{php echo date('Y-m-d',$merchant['updatetime'])}<br>{php echo date('H:i:s',$merchant['updatetime'])}</td>
+					<td>{if $merchant['status']==1}
+						<label class="label label-default label-default">代理审核中</label>
+						{elseif $merchant['status']==2}
+						<label class="label label-default label-info">系统审核中</label>
+						{elseif $merchant['status']==3}
+						<label class="label label-default label-warning">系统审核通过，待结算</label>
+						{elseif $merchant['status']==4}
+						<label class="label label-default label-danger">已结算给代理</label>
+						{elseif $merchant['status']==5}
+						<label class="label label-default label-success">已结算到商家</label>
+						{/if}
+					<td style="text-align: center;">
+						<a  href="{php echo web_url('finace/wlCash/detail', array( 'id'=>$merchant['id']));}" title="核实订单" class="btn btn-default btn-sm">核实订单</a> 
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+		{$pager}
+		{if empty($list)}
+		    <div class="panel-body" style="text-align: center;padding:30px;">
+		        暂时没有任何数据!
+		    </div>
+		{/if}
+	</div>
+</div>
+{php include wl_template('common/footer');}

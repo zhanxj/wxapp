@@ -1,0 +1,56 @@
+{php include wl_template('common/header');}
+<ul class="nav nav-tabs">
+	<li><a href="{php echo web_url('store/group/index')}">商户分组列表</a></li>
+	<li {if empty($data['id'])}class="active"{/if}><a href="{php echo web_url('store/group/edit')}">添加商户分组</a></li>
+	{if !empty($data['id'])}
+	<li class="active"><a href="#">编辑商户分组</a></li>
+	{/if}
+</ul>
+<div class="clearfix">
+	<form action="" method="post" class="layui-form" enctype="multipart/form-data" id="form1">
+		<input type="hidden" name="id" value="{$group['id']}" />
+		<div class="panel panel-default" id="step1">
+			<div class="panel-heading">
+				商户分组
+			</div>
+			<div class="panel-body">
+				<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">分组名称<span class="must-fill">*</span></label>
+		    		<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 layui-input-block">
+		      			<input type="text" name="group[name]" required  lay-verify="required" placeholder="请输入分组名称"  autocomplete="off" class="layui-input" value="{$group['name']}">
+		    		</div>
+		  		</div>
+		  		<!--<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">分组权限<span class="must-fill">*</span></label>
+		    		<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 layui-input-block">
+		      			<select name="group[package]" lay-verify="required">
+        					<option value="0" selected>权限1</option>
+        					<option value="1">权限2</option>
+        					<option value="2">权限3</option>
+      					</select>
+		    		</div>
+		  		</div>-->
+		  		<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">是否默认</label>
+		    		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-7 layui-input-block">
+		      			<input type="radio" name='isdefault' value='1' {if $group['isdefault']==1}checked{/if} title="是">
+      					<input type="radio" name='isdefault' value='0' {if $group['isdefault']==0}checked{/if} title="否">
+		    		</div>
+		  		</div>
+		  		<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">是否启用</label>
+		    		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-7 layui-input-block">
+		      			<input type="radio" name='enabled' value='1' {if $group['enabled']==1}checked{/if} title="是">
+      					<input type="radio" name='enabled' value='0' {if $group['enabled']==0}checked{/if} title="否">
+		    		</div>
+		  		</div>
+			</div>
+		</div>
+		<div class="form-group col-md-12">
+			<input name="submit" type="submit" lay-submit class="btn btn-primary min-width" value="保存">
+			<input type="hidden" name="token" value="{$_W['token']}" />
+			<input type="hidden" name="id" value="{php echo intval($_GPC['id']);}" />
+		</div>
+	</form>
+</div>
+{php include wl_template('common/footer');}

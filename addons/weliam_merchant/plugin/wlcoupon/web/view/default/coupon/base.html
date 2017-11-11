@@ -1,0 +1,138 @@
+{php include wl_template('common/header');}
+<style>
+.select2{width: 100%;}
+.select2-container .select2-choice .select2-arrow b{background-color: #eeeeee}
+.w200{width: 200px;}
+.w60{width: 60px;text-align: right;}
+.form-horizontal .form-group{margin-left: 0;margin-right: 0;}
+.table> thead> tr> th{border: none;}
+.is_default{display: table-block;}
+.is_advanced{display: none;}
+#openids_selector .input-group{width: 100%;}
+.is_sms{display: table-block;}
+.layui-anim-upbit{-webkit-animation-name: layui-upbit;animation-name: layui-upbit;}
+.layui-anim{-webkit-animation-duration: .3s;animation-duration: .3s;-webkit-animation-fill-mode: both;animation-fill-mode: both;}
+.layui-form-selected ul{display: block;}
+.layui-input-block, .layui-input-inline{position: relative;}
+.layui-form-select ul{display: none;position: absolute;left: 0;top: 37px;margin-bottom: 50px;padding: 0;z-index: 999;width: 100%;border: 1px solid #d2d2d2;max-height: 300px;overflow-y: auto;background-color: #fff;border-radius: 2px;box-shadow: 0 2px 4px rgba(0, 0, 0, .12);box-sizing: border-box;}
+.layui-form-select{position: absolute;margin-top: -18px;display: none;}
+</style>
+<ul class="nav nav-tabs" id="myTab">
+	<li class="active">
+		<a href="#tab_basic">基本设置</a>
+	</li>
+	<li>
+		<a href="#tab_share">列表分享</a>
+	</li>
+</ul>
+<div class="main">
+	<form action="" method="post" class="form-horizontal layui-form" id="setting-form">
+		<div class="panel panel-default">
+			<div class="panel-heading">模块设置</div>
+			<div class="panel-body">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_basic">
+						<div class="form-group">
+							<div id="datas" class="sms-template-1" style="display:block;">
+						        {if empty($base['content'])}
+				                	{php include wl_template('coupon/imgandurl');}
+				                {else}
+				                    {loop $base['content'] $data}
+				                    	{php include wl_template('coupon/imgandurl');}
+				                    {/loop}
+				                {/if}
+						    </div>
+						    <div class="form-group sms-template-1" style="display:block;">
+						        <label class="col-sm-2 control-label"></label>
+						        <div class="col-sm-8 col-xs-12">
+						            <a class="btn btn-default btn-add-type" href="javascript:;" onclick="addType();">
+						                <i class="fa fa-plus" title=""></i>增加一条广告</a>
+						        </div>
+						    </div>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab_share">
+						<div class="form-group">
+							<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分享标题</label>
+							<div class="col-sm-8">
+								<input type="text" name="base[share_title]" class="form-control" value="{$base['share_title']}" />
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分享图片</label>
+							<div class="col-sm-8">
+								{php echo tpl_form_field_image('base[share_image]', $base['share_image']);}
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-12 col-sm-3 col-md-2 col-lg-2 control-label">分享描述</label>
+							<div class="col-sm-8">
+								<input id="description" name="base[share_desc]" class="form-control description" value="{$base['share_desc']}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div style="padding: 0;" class="form-group col-sm-12">
+			<input type="submit" name="submit" value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+<script>
+	$(function() {
+		window.optionchanged = false;
+		$('#myTab a').click(function(e) {
+			e.preventDefault(); //阻止a链接的跳转行为
+			$(this).tab('show'); //显示当前选中的链接及关联的content
+		})
+	});  
+	
+	$(document).ready(function() {
+        $(".s1").select2();
+    });
+	  $(document).ready(function() {
+        $(".s2").select2();
+    });
+    
+      $(document).ready(function() {
+        $(".s3").select2();
+    });
+
+var flag=1;
+var msg_all=document.getElementById('msg_all');
+var msg1=document.getElementById('msg1');
+var msg2=document.getElementById('msg2');
+var msg3=document.getElementById('msg3');
+
+layui.use('form', function(){
+  var form = layui.form();
+  
+  //各种基于事件的操作，下面会有进一步介绍
+  form.on('switch(msg_all)', function(data){
+  console.log(data);
+  console.log(data.elem); //得到checkbox原始DOM对象
+  console.log(data.elem.checked); //开关是否开启，true或者false
+  console.log(data.value); //开关value值，也可以通过data.elem.value得到
+});  
+});
+layui.use();
+ 
+var kw = 1;
+	function addType() {
+	    $(".btn-add-type").button("loading");
+	    $.ajax({
+	        url: "{php echo web_url('rush/set/advtpl')}&kw="+kw,
+	        cache: false
+	    }).done(function (html) {
+	        $(".btn-add-type").button("reset");
+	        $("#datas").append(html);
+	    });
+	    kw++;
+	}
+function removes(asd){
+        $(asd).closest('.data-item').remove();
+   }
+</script>
+{php include wl_template('common/footer');}

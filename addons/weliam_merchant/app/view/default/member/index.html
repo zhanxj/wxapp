@@ -1,0 +1,208 @@
+{php include wl_template('common/header');}
+<div class="page-group" >
+    <div class="page page-current" id="page-index">
+    	{php include wl_template('common/followbar');}
+    	{php include wl_template('common/footerbar');}
+		<div class="content native-scroll">
+		    <div class="my">
+                <div class="my_head">
+                    <div class="my_head_pic">
+                        <img id="uinLogo" class="my_head_img" width="130" height="130" alt="" src="{$_W['wlmember']['avatar']}">
+                    </div>
+                    <div class="my_head_info">
+                        <h4 id="nickname" class="my_head_name ">{$_W['wlmember']['nickname']}</h4>
+                        <span class="bind_phone">[{if $_W['wlmember']['vipstatus']==1}VIP会员{else}普通会员{/if}]</span>
+                    </div>
+                </div>
+                <ul class="my_transaction my_transaction3">
+               <li>
+					<a href="javascript:;">
+						<div class="my_transaction_num" id="fav_shop_total_count"><span>{$_W['wlmember']['credit2']}</span> 元</div>
+						<div class="my_transaction_txt"><i class="icon iconfont icon-recharge" style="color: #00AAFF;position: static;display: inline-block;"></i> &nbsp;我的余额</div>
+					</a>
+				</li>
+				<li>
+					<a href="javascript:;">
+						<div class="my_transaction_num" id="fav_shop_total_count"><span>{$_W['wlmember']['credit1']}</span> 分</div>
+						<div class="my_transaction_txt"><i class="icon iconfont icon-pay" style="color: #FF5D4F;position: static;display: inline-block;"></i> &nbsp;我的积分</div>
+					</a>
+				</li>
+				<li>
+					<a href="{php echo app_url('member/user/storecollect');}">
+						<div class="my_transaction_num" id="fav_item_total_count"><span>{$collectnum}</span> 个</div>
+						<div class="my_transaction_txt"><i class="icon iconfont icon-likefill" style="color: #FFB900;position: static;display: inline-block;"></i> &nbsp;我的收藏</div>
+					</a>
+				</li>
+				</ul>
+            </div>
+            {if empty($_W['wlmember']['mobile'])}
+            <div class="list-block media-list" style="margin: 0.6rem 0;">
+		      <ul>
+		        <li>
+		            <a href="{php echo app_url('member/user/binding');}" class="item-link item-content">
+			            <div class="item-media"><div style="background-color: #12ADFF;padding: 7px;border-radius: 50%;"><img src="{URL_APP_IMAGE}vip/mobile.png" width="30"></div></div>
+			            <div class="item-inner">
+			              	<div class="item-title-row">
+			                	<div class="item-title" style="color: #F26665;">绑定手机号</div>
+			              	</div>
+			              	<div class="item-subtitle">绑定手机号，方便您接收消息提醒</div>
+			            </div>
+		            </a>
+		        </li>
+		      </ul>
+		    </div>
+		    {/if}
+            <div class="list-block" style="margin: 0.6rem 0;">
+		      <ul>
+		        <li>
+		        	<a href="{php echo app_url('order/userorder/orderlist',array('status'=>'all'))}" class="item-link item-content list-button-order">
+		              	<div class="item-inner">
+		                	<div class="item-title" style="padding-left: .75rem;">我的订单</div>
+		                	<div class="item-after">全部订单</div>
+		              	</div>
+		            </a>
+		        </li>
+		        <li>
+		        	<div style="padding: 0 .75rem;text-align: center;">
+		        		<div class="row order-row">
+		        			<div class="col-25" onclick="location.href='{php echo app_url('order/userorder/orderlist',array('status'=>0))}'">
+		        				<div class="icondiv">
+		        					<i class="icon iconfont icon-pay"></i>
+		        				</div>
+		        				<span class="title-num" id="num1">{if $num1}{$num1}{/if}</span>
+		        				<div class="txt">待付款</div>
+		        			</div>
+			        		<div class="col-25" onclick="location.href='{php echo app_url('order/userorder/orderlist',array('status'=>1))}'">
+		        				<div class="icondiv">
+		        					<!--<span class="badge">2</span>-->
+		        					<i class="icon iconfont icon-send"></i>
+		        				</div>
+		        				<span class="title-num" id="num2">{if $num2}{$num2}{/if}</span>
+		        				<div class="txt">待使用</div>
+		        			</div>
+		        			<div class="col-25" onclick="location.href='{php echo app_url('order/userorder/orderlist',array('status'=>2))}'">
+		        				<div class="icondiv">
+		        					<i class="icon iconfont icon-comment"></i>
+		        				</div>
+		        				<span class="title-num" id="num3">{if $num3}{$num3}{/if}</span>
+		        				<div class="txt">待评价</div>
+		        			</div>
+		        			<div class="col-25" onclick="location.href='{php echo app_url('order/userorder/orderlist',array('status'=>6))}'">
+		        				<div class="icondiv">
+		        					<i class="icon iconfont icon-refund"></i>
+		        				</div>
+		        				<span class="title-num" id="num4">{if $num4}{$num4}{/if}</span>
+		        				<div class="txt">待退款</div>
+		        			</div>
+		        		</div>
+		        	</div>
+		        </li>
+		      </ul>
+		    </div>
+            <div class="list-block usercenter" style="margin: 0.6rem 0;">
+		      <ul>
+		        <li>
+		            <a href="{php echo app_url('member/vip/open');}" class="item-link item-content">
+		            	<div class="item-media"><i class="icon iconfont icon-crownfill"></i></div>
+		              	<div class="item-inner">
+				            <div class="item-title">{if $_W['wlmember']['vipstatus']==1}我的VIP会员{else}暂未开通VIP{/if}</div>
+				            <div class="item-after">{if $_W['wlmember']['vipstatus']==1}续费{else}开通{/if}</div>
+				        </div>
+		            </a>
+		        </li>
+		        {if $halfcardbase['status'] == 1}
+		        <li>
+		            <a href="{php echo app_url('halfcard/halfcardopen/open');}" class="item-link item-content">
+		            	<div class="item-media"><i class="icon iconfont icon-vipcard"></i></div>
+		              	<div class="item-inner">
+		                	<div class="item-title">{if $halfcardflag==1}我的五折卡{else}暂未开通五折卡{/if}</div>
+		                	<div class="item-after">{if $halfcardflag==1}查看{else}开通{/if}</div>
+		              	</div>
+		            </a>
+		        </li>
+		        {/if}
+		      </ul>
+		    </div>
+		    <div class="list-block usercenter" style="margin: 0.6rem 0;">
+		      <ul>
+		      	<li>
+		            <a href="{php echo app_url('wlcoupon/coupon_app/couponList');}" class="item-link item-content">
+		            	<div class="item-media"><i class="icon iconfont icon-ticket"></i></div>
+		              	<div class="item-inner">
+		                	<div class="item-title">我的卡券</div>
+		              	</div>
+		            </a>
+		        </li>
+		        <!--<li>
+		            <a href="{php echo app_url('rush/home/myOrder');}" class="item-link item-content">
+		            	<div class="item-media"><i class="icon iconfont icon-qiang"></i></div>
+		              	<div class="item-inner">
+		                	<div class="item-title">我的抢购</div>
+		              	</div>
+		            </a>
+		        </li>-->
+		        <li>
+		            <a href="{php echo app_url('store/supervise/storelist');}" class="item-link item-content">
+		            	<div class="item-media"><i class="icon iconfont icon-taoxiaopu"></i></div>
+		              	<div class="item-inner">
+		                	<div class="item-title">商家管理</div>
+		              	</div>
+		            </a>
+		        </li>
+		        <!--<li>
+		            <a href="{php echo app_url('coupon/coupon_app/couponlist');}" class="item-link item-content">
+		            	<div class="item-media"><i class="icon iconfont icon-ticket"></i></div>
+		              	<div class="item-inner">
+		                	<div class="item-title">我的优惠券</div>
+		              	</div>
+		            </a>
+		        </li>-->
+		      </ul>
+		    </div>
+		</div>
+	</div>
+</div>
+<style>
+.my{position:relative;z-index:1;width:100%;height:170px;background-size:100% auto;background: #06c1ae url(http://wiki.mikecrm.com/assets/frontend/images/template/template-top.png) 50% no-repeat;}
+.my_head_pic{padding:.8rem 0 0}
+.my_head_img{width:65px;height:65px;border:solid 2px #fff;border-radius:67px;margin-left: 30px;margin-top: 10px;}
+.my_head_info{color:white;position: absolute;top: 30px;left: 110px;}
+.my_head_name{padding:7.5px 0 5.5px;font-size:17px;line-height:1.2;color: white;}
+.my_head_prototype{font-size:11px;line-height:1}
+.my_transaction{position:absolute;right:0;bottom:0;left:0;padding: 10px 0 5px 0;background:white;}
+.my_transaction li{position:relative;float:left;color:#000;text-align:center}
+.my_transaction li a{color:#000}
+.my_transaction li:after{position:absolute;top:0;right:0;bottom:0;border-right:1px solid #C5C5C5;content:"";-webkit-transform:scaleX(.5);-webkit-transform-origin:0 0}
+.my_transaction li:last-child:after{border:none}
+.my_transaction1{width:100%}
+.my_transaction2 li{width:50%}
+.my_transaction3 li{width:33.33%}
+.my_transaction li:last-child{border:none}
+.my_transaction_num{font-size:13px;line-height:1;color: #B1B1B1;}
+.my_transaction_num span{font-size:20px;color: #FF5D4F;}
+.my_transaction_txt{padding-top:2px;font-size:14px;line-height:1.2}
+.my_transaction:after{content: " ";position: absolute;left: 0;bottom: 0;width: 100%;height: 1px;border-bottom: 1px solid #D9D9D9;color: #D9D9D9;-webkit-transform-origin: 0 100%;transform-origin: 0 100%;-webkit-transform: scaleY(0.5);transform: scaleY(0.5);}
+.usercenter .iconfont{font-size: 1.3rem;line-height: 1.45rem;}
+.usercenter .icon-crownfill{color: #F26665;}
+.usercenter .icon-vipcard{color: #F26665;}
+.usercenter .icon-likefill{color: #F26665;}
+.usercenter .icon-qiang{color: #12ADFF;}
+.usercenter .icon-ticket{color: #12ADFF;}
+.usercenter .icon-taoxiaopu{color: #12ADFF;}
+/*个人中心订单*/
+.order-row .col-25{padding: 10px 0;}
+.order-row .iconfont{font-size: 1.2rem;color: #929292;}
+.order-row .txt{line-height: 12px;font-size: 0.6rem;color: #312C2C;margin-top: 5px;}
+.order-row .icondiv{line-height: 24px;}
+.order-row .title-num{line-height: 16px;padding: 0 5px;margin-left: 1px;border-radius: 10px;border: 2px solid #fff;font-size: 10px;color: #fff;background-color: #f76161;}
+.order-row #num1{position: absolute;left:15%;top: 4px;}
+.order-row #num2{position: absolute;left:39%;top: 4px;}
+.order-row #num3{position: absolute;left:63%;top: 4px;}
+.order-row #num4{position: absolute;left:86%;top: 4px;}
+/*.order-row .icon-pay{color: #99CDFF;}
+.order-row .icon-send{color: #FF8692;}
+.order-row .icon-comment{color: #F0DE44;}
+.order-row .icon-refund{color: #ADB3FF;}*/
+.list-button-order{text-align: center;padding-left: 0!important;}
+</style>
+{php include wl_template('common/footer');}

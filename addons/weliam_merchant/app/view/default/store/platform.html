@@ -1,0 +1,111 @@
+{php include wl_template('common/header');}
+<style>
+#page-shop-manage .shop-manage-top-text{position: absolute;margin: 10px 15px;font-size: .8rem;color: #fff;}
+#page-shop-manage .shop-manage-top-num{position: absolute;top: 30px;left: 0;margin: 8px 17px;font-size: .7rem;color: #fff;}
+#page-shop-manage .shop-manage-top-getmoney{position: absolute;top: 0;right: 0;margin: 8px 15px;font-size: .8rem;color: #fff;}
+#page-shop-manage .shop-manage-top{width: 100%;height: 150px;background-color: #06C1AE;}
+#page-shop-manage .shop-manage-middle{background-color: #fff;height: 70px;}
+#page-shop-manage .shop-manage-middle-box{margin: 10px auto;}
+#page-shop-manage .shop-manage-middle-num{font-size: .8rem;text-align: center;color: #777;display: block;line-height: 22px;}
+#page-shop-manage .shop-manage-middle-text{font-size: .6rem;text-align: center;color: #929292;display: block;line-height: 28px;}
+#page-shop-manage .shop-manage-bottom{background-color: #fff;}
+#page-shop-manage .shop-manage-bottom-icon{height: 80px;display: table-cell;vertical-align: middle;width: 33.33%;}
+#page-shop-manage .shop-manage-bottom-icon img{width: 60px;display:block;margin: auto;}
+#page-shop-manage .shop-manage-bottom-text{display: block;height: 30px;text-align: center;color: #929292;font-size: .6rem;}
+</style>
+<div class="page-group">
+    <div class="page page-current" id="page-shop-manage">
+    	{php include wl_template('common/store_footerbar');}
+		<div class="content native-scroll">
+			<div class="shop-manage-top">
+				<span class="shop-manage-top-text">可用余额（元）</span>
+				<span class="shop-manage-top-num">{$account['amount']}</span>
+				<span class=""><a href="{php echo app_url('store/supervise/cash')}" class="pull-right shop-manage-top-getmoney  external " >提现<span class="iconfont icon-right"></span></a></span><!--js-cash-->
+			</div>
+			<div class="row no-gutter shop-manage-middle">
+				<div class="col-33">
+					<div class="shop-manage-middle-box">
+						<span class="shop-manage-middle-num">{$orderData[2]}</span>
+						<span class="shop-manage-middle-text">今日成交量</span>
+					</div>
+				</div>
+				<div class="col-33">
+					<div class="shop-manage-middle-box" style="border-right: 1px solid #e7e7e7;border-left: 1px solid #e7e7e7;">
+						<span class="shop-manage-middle-num">{$money}</span>
+						<span class="shop-manage-middle-text">今日成交额</span>
+					</div>
+				</div>
+				<div class="col-33">
+					<div class="shop-manage-middle-box">
+						<span class="shop-manage-middle-num">1</span>
+						<span class="shop-manage-middle-text">我的活动数量</span>
+					</div>
+				</div>
+			</div>
+			<div class="row no-gutter shop-manage-bottom" style="margin-top: 20px;">
+				<div class="row no-gutter">
+					<div class="col-33 sherry-click "><!--js-merchant-->
+						<a href="{php echo app_url('store/supervise/shopset')}" class="external">
+							<div class="shop-manage-bottom-icon"><img src="{URL_APP_IMAGE}supervise/store.png"></div>
+							<span class="shop-manage-bottom-text">店铺管理</span>
+						</a>
+					</div>
+					<div class="col-33 sherry-click "><!--js-rush-->
+						<a href="{php echo app_url('store/supervise/goods')}" class="external">
+							<div class="shop-manage-bottom-icon"><img src="{URL_APP_IMAGE}supervise/goodshouse.png"></div>
+							<span class="shop-manage-bottom-text">仓库管理</span>
+						</a>
+					</div>
+					<div class="col-33 sherry-click "><!--js-order-->
+						<a href="{php echo app_url('store/supervise/order')}" class="external">
+							<div class="shop-manage-bottom-icon"><img src="{URL_APP_IMAGE}supervise/order.png"></div>
+							<span class="shop-manage-bottom-text">订单管理</span>
+						</a>
+					</div>
+				</div>
+				<div class="row no-gutter shop-manage-bottom">
+					<div class="col-33 sherry-click">
+						<a href="{php echo app_url('store/supervise/admin')}" class="external">
+							<div class="shop-manage-bottom-icon"><img src="{URL_APP_IMAGE}supervise/verif.png"></div>
+							<span class="shop-manage-bottom-text">管理员</span>
+						</a>
+					</div>
+					<div class="col-33 sherry-click">
+						<a href="{php echo app_url('store/supervise/verificationtool')}" class="external">
+							<div class="shop-manage-bottom-icon"><img src="{URL_APP_IMAGE}supervise/qrcode.png"></div>
+							<span class="shop-manage-bottom-text">核销工具</span>
+						</a>
+					</div>
+					<div class="col-33 sherry-click js-data">
+						<a href="{php echo app_url('store/supervise/summary')}" class="external">
+							<div class="shop-manage-bottom-icon"><img src="{URL_APP_IMAGE}supervise/summary.png"></div>
+							<span class="shop-manage-bottom-text">数据统计</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$('.js-merchant, .js-order, .js-rush, .js-data,.js-cash').click(function(e) {
+		e.preventDefault();//阻止a链接的跳转行为
+			layer.open({
+		    content: '开发中...'
+		    ,skin: 'msg'
+		    ,time: 2 //2秒后自动关闭
+		  });
+		});
+	/*点击元素背景变暗效果*/
+	$(".sherry-click").on('touchstart', function() {
+		$(this).css({
+			"backgroundColor": "#e6e6e6"
+		});
+	})
+	$(".sherry-click").on('touchend', function() {
+		$(this).css({
+			"backgroundColor": "#fff"
+		});
+	})
+</script>
+{php include wl_template('common/footer');}

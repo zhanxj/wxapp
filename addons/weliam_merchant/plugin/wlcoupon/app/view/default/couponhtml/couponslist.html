@@ -1,0 +1,585 @@
+{php include wl_template('common/header');}
+<style type="text/css">
+em {font-style: normal;}
+a{color: black;}
+a:link{color: black;}
+#page-index .select-modal{position: fixed;top: 0;left: 0;width: 100%;height: 100%;background-color: rgba(0, 0, 0, .3);display: none;z-index: 888;}
+/*#page-index div{border: none;}*/
+#page-index .index-nav{position: relative;z-index: 999;background-color: #fff;border-bottom: 1px solid #e7e7e7;padding: 5px 0;padding-top: .5rem;}
+#page-index .index-navbar{height: 30px;line-height: 30px;text-align: center;display: inline-block;}
+#page-index .index-navbar span{font-size: 14px;margin-top: -2px;}
+#page-index .all-select{position: absolute;top: -300px;left: 0;z-index: 900;width: 100%;height: 300px;overflow: hidden;-webkit-transition: top .2s ease;transition: top .2s ease;background:url({URL_APP_IMAGE}halfcard/select_bg.png) repeat-y;}
+#page-index .close-all-select{position: absolute;bottom: 0;left: 0;width: 100%;height: 38px;line-height: 36px;font-size: 22px;font-weight: 400;color: #ccc;text-align: center;background-color: rgba(255, 255, 255, .95);font-family: sans-serif;}
+#page-index .all-select-li{padding-left: 50px;list-style-type: none;height: 41px;line-height: 41px;opacity: 0;border-bottom: 1px solid #fcfcfc;}
+#page-index .all-select-li-disable{padding-left: 50px;list-style-type: none;height: 13px;line-height: 13px;opacity: 0;font-size: 13px;border: none;}
+#page-index #all-select-left{position: relative;padding: 5px 15px;top: 2px;width: 150%;height: 300px;color: #777;overflow-y: scroll;}
+#page-index #all-select-right{position: relative;padding: 5px 0;top: -100%;left: 147px;width: 80%;height: 300px;color: #999;overflow-y: scroll;display: none;border-bottom: 1px solid #fff;}
+#page-index #all-select-left li{-webkit-transition: all .1s ease;transition: all .1s ease;}
+#page-index #all-select-right li{-webkit-transition: all .1s ease;transition: all .1s ease;}
+#page-index .qiang,#page-index .zhe{padding: 1px 2px;border-radius: 3px;color: #fff;font-size: 13px;background-color: red;}
+#page-index .zhe{background-color: : orangered;}
+#page-index .loading_text{height: 40px;width: 100%;display: inline-block;line-height: 40px;text-align: center;color: #fff;}
+#page-index #all-type:before{content: "";position: absolute;top: 15px;left: 33.3333%;height: 20px;width: 1px;background-color: #e7e7e7;}
+#page-index #all-city:before{content: "";position: absolute;top: 15px;left: 66.6666%;height: 20px;width: 1px;background-color: #e7e7e7;}
+#page-index .list-block ul:after{height: 0;}
+#page-index .list-block ul:before{height: 0;}
+.storehead{padding-left: 20px;padding-right: 20px;background-color: rgba(72,84,96,0.2);}
+.bar-footer~.content{bottom: 0;}
+.slide{width: 100%;height: 130px;background-color: #222222;}
+.content{border-radius: 5px 5px 0 0 ;font-family: "黑体";{if !empty($base['content'])}margin-top: 145px;{else}margin-top: 15px;{/if}}
+.item2{position: relative;width: 94%;height: 5rem;margin-left: 3%;background-color: #fff;margin-top: 10px;}
+.dot{position: absolute;width: .5rem;height: .5rem;border-radius: 100%;background-color: #efeff4;}
+.topdot{top: -1.4rem;left: 44%;width: 2rem;height: 2rem;}
+.dot-left-top{left: -0.25rem;top: -0.25rem;}
+.dot-left-bottom{left: -0.25rem;bottom: -0.25rem;}
+.dot-right-top{right: -0.25rem;top: -0.25rem;}
+.dot-right-bottom{right: -0.25rem;bottom: -0.25rem;}
+.item{margin-bottom: .3rem;}
+.item-left{position: absolute;left: 2%;top: 0;width: 23%;height: 100%;}
+.item-left img{position: absolute;width: 3rem;height: 3rem;top: 45%;left: 40%;margin: -30px;border-radius: 60px;}
+.item-center{position: absolute;left: 25%;top: 0;width: 47%;height: 100%;}
+.item-right{position: absolute;text-align: center;left: 72%;top: 0;width: 26%;height: 100%;}
+.item-span{display: block;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;position: relative;top: .5rem;}
+.card-title{font-size: .8rem;}
+.card-name{font-size: .6rem;margin-top: 2px;}
+.new-user,.ole-user{font-size: .6rem;color: #c7c7c7;}
+.item-right a,.item-right span:not(.got){display: block;text-align: center;}
+#free-get{border-radius: 2px;background-color: #1AB6EF;color: #fff;padding: 5px 10px;text-decoration: none;display: inline;position: relative;top: 1rem;border-radius: 5px;font-size: .65rem;}
+.svip{color: #999;font-size: .6rem;display: inline-block;top: 1.4rem;position: relative;}
+.got{display: inline-block;padding: 0 1px;border-radius: 3px;color: 8d8d8d;background-color: #f2f2f2;position: relative;top: 1.6rem;font-size: .65rem;}
+.dot-line{position: absolute;right: 0;top: 0;width: 3px;height: 200px;top: -2px;}
+.dot-line span{width: 3px;height: 3px;border-radius: 3px;background-color: #efeff4;margin-bottom: 2px;float: left;}
+</style>
+<div class="page-group">
+	<div class="page page-current" id="page-index">
+		{php include wl_template('common/rightnav');}
+		{if !empty($base['content'])}
+		<div class="banner" id="ban_adv">
+			<div class="swiper-wrapper">
+				{loop $base['content'] $adv}
+					<div onclick="document.location = '{$adv['data_url']}'" class="swiper-slide"><img src="{php echo tomedia($adv['data_img'])}"></div>
+				{/loop}			    
+			</div>
+		</div>
+		<style>
+			.banner{visibility: visible;width: 100%;height:130px;position: relative;overflow: hidden;}
+			.banner img{width: 100%;height: 130px;}
+		</style>
+		<script>
+		    $(function() {
+		        var mySwiper = new Swiper ('#ban_adv', {
+		            autoplay:3000,
+		            speed:500,
+		            loop:true,
+		            autoplayDisableOnInteraction:false
+		        });
+		    });
+		</script>
+		{/if}
+		<div class="row no-gutter index-nav navbar-fixed-top">
+			<!--<div class="dot topdot"></div>-->
+			<div class="col-33 index-navbar sherry-click" id="all-nearby" data-id="">
+				<em>附近优先</em>
+				<span class="icon iconfont icon-unfold icon-animate" id="all-nearby-icon"></span>
+			</div>
+			<div class="col-33 index-navbar sherry-click" id="all-city" data-id="">
+				<em>全城</em>
+				<span class="icon iconfont icon-unfold icon-animate" id="all-city-icon"></span>
+			</div>
+			<div class="col-33 index-navbar sherry-click" id="all-type" data-id="">{if $cname}{$cname}{else}<em>商户分类</em>{/if}
+				<span class="icon iconfont icon-unfold icon-animate" id="all-type-icon"></span>
+			</div>
+		</div>
+		<div class="select-modal"></div>
+
+		<div class="all-select">
+			<ul id="all-select-left">
+			</ul>
+			<ul id="all-select-right">
+			</ul>
+			<div class="close-all-select sherry-click">×</div>
+		</div>
+		<div class="content infinite-scroll-bottom infinite-scroll" data-distance="300">
+			<div class="list-block media-list" id="dataBox" style="margin-top: 40px;">
+				<ul class="list-container" style="background-color: transparent;">
+				</ul>
+			</div>
+			<div class="infinite-scroll-preloader">
+				<div class="weui-loadmore">
+			        <i class="weui-loading"></i>
+			        <span class="weui-loadmore__tips">正在加载</span>
+			        <input type="hidden" id="asdasd"  />
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+<script id="storetemid" type="text/html">
+{{# for(var i = 0, len = d.length; i < len; i++){ }} 
+	{{# if(d[i]) { }}
+		{{# for(var w = 0, len2 = d[i].coupon.length; w < len2; w++){ }} 
+		<li class="item" >
+			<a href="{{d[i].coupon[w].href}}">
+			<div class="item2">
+					<div class="dot dot-left-top"></div>
+					<div class="dot dot-left-bottom"></div>
+					<div class="dot dot-right-top"></div>
+					<div class="dot dot-right-bottom"></div>
+					<div class="item-left">
+						<img src="{{ d[i].coupon[w].logo }}">
+					</div>
+					<div class="item-center">
+						<span class="item-span card-title">{{ d[i].coupon[w].title }}</span>
+						<span class="item-span card-name">{{ d[i].storename }}</span>
+						<span class="item-span new-user">{{d[i].coupon[w].sub_title}}</span>
+						<span class="item-span ole-user"><i class="icon iconfont icon-location"></i>{{ d[i].distance }}</span>
+						<div class="dot-line">
+							<span></span><span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span><span></span>
+							<span></span><span></span><span></span><span></span>
+						</div>
+					</div>
+					<div class="item-right">
+						<a href="{{d[i].coupon[w].href}}" id="free-get">{{ d[i].coupon[w].charge }}</a>
+						{{# if(d[i].coupon[w].vipstatus == 1) { }}<span class="svip">限VIP</span>{{# } }}
+						{{# if(d[i].coupon[w].vipstatus == 2) { }}<span class="svip">VIP特价</span>{{# } }}
+						<span class="got">剩余{{ d[i].coupon[w].quantity - d[i].coupon[w].surplus }}张</span>
+					</div>
+				</div>
+			</a>	
+		</li>
+		{{# } }}
+	{{# } }}
+{{# } }}
+</script>
+<script type="text/javascript">
+	var loading = false,
+		maxItems = 1000,
+		itemsPerLoad = 10,
+		nothing = false,
+		lastIndex = 10,
+		n = 0,
+		pid = "",
+		cid = "",
+		distid = "",
+		listData = [],
+		page = 1,
+		pagesize = 8,
+		endmark = 1,
+		t = null,
+		tt = null;
+	var map, geolocation;
+	var longitude = 0,
+		latitude = 0;
+	//加载地图，调用浏览器定位服务
+	map = new AMap.Map('container', {
+		resizeEnable: true
+	});
+	map.plugin('AMap.Geolocation', function(){
+		geolocation = new AMap.Geolocation({
+			enableHighAccuracy: true, //是否使用高精度定位，默认:true
+			timeout: 10000, //超过10秒后停止定位，默认：无穷大
+			buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+			zoomToAccuracy: true, //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+			buttonPosition: 'RB'
+		});
+		map.addControl(geolocation);
+		geolocation.getCurrentPosition();
+		AMap.event.addListener(geolocation, 'complete', onComplete); //返回定位信息
+		AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
+	});
+	AMap.service('AMap.Geocoder', function() { //回调函数
+			//实例化Geocoder
+			geocoder = new AMap.Geocoder({
+				city: "010" //城市，默认：“全国”
+			});
+		})
+		//解析定位结果
+	function onComplete(data) {
+		latitude = data.position.getLat(); // 纬度，浮点数，范围为90 ~ -90
+		longitude = data.position.getLng(); // 经度，浮点数，范围为180 ~ -180。
+		var posturl = "{php echo app_url('wlcoupon/coupon_app/getstore',array('cid'=>$cid,'pid'=>$pid,'keyword'=>$keyword))} "+ "&lng=" + longitude + "&lat=" + latitude;
+		ajaxGetFn({
+			url: posturl,
+			fn: function(data) {
+				sessionStorage.setItem("demokey",JSON.stringify(data));
+				var contentdata = data.slice(0,pagesize);
+				addItems(itemsPerLoad, 0, contentdata);
+			}
+		})
+	}
+	//解析定位错误信息
+	function onError(data) {
+		$.alert('获取地理位置失败，重新获取！', function() {
+			location.href = "{php echo app_url('dashboard/index')}";
+		});
+	}
+
+	function ajaxGetFn(option) {
+		$.ajax({
+			type: "GET",
+			url: option.url,
+			async: true,
+			success: function(data) {
+				data = eval(data);
+				option.fn(data);
+			},
+			error: function() {}
+		});
+	}
+
+	function openSelectFn() {
+		clearTimeout(t);
+		$("#page-index .select-modal").css({
+			"display": "block"
+		})
+		$("#page-index .all-select").css({
+			"top": "170px"
+		})
+		$("#page-index #all-select-left li").css({
+			"opacity": "0",
+			"paddingLeft": "50px"
+		})
+		$("#page-index #all-select-right li").css({
+			"opacity": "0",
+			"paddingLeft": "50px"
+		})
+		$("#page-index #all-select-right").css({
+			"display": "none"
+		})
+		setTimeout(function() {
+			$("#page-index #all-select-left li").css({
+				"opacity": "1",
+				"paddingLeft": "8px"
+			})
+		}, 200);
+	}
+
+	function closeSelectFn() {
+		resetSwitchIcon();
+		$(".all-select").css({
+			"top": "-300px"
+		})
+		$(".select-modal").css({
+			"display": "none"
+		})
+		setTimeout(function() {
+			$("#all-select-left li").css({
+				"opacity": "0",
+				"paddingLeft": "50px"
+			})
+			$("#all-select-right li").css({
+				"opacity": "0",
+				"paddingLeft": "50px"
+			})
+			$("#all-select-right").css({
+				"display": "none"
+			})
+		}, 200)
+	}
+
+	function resetLoadFn(data) {
+		$('.infinite-scroll-preloader').css({
+			"display": "block"
+		});
+		//重置加载数据的最初值                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+		lastIndex = 10;
+		//判断提示 “没有啦”
+		nothing = false;
+		$(".all-select").css({
+			"top": "-300px"
+		})
+		$(".select-modal").css({
+			"display": "none"
+		})
+		setTimeout(function() {
+			$("#all-select-left li").css({
+				"opacity": "0",
+				"paddingLeft": "50px"
+			})
+			$("#all-select-right li").css({
+				"opacity": "0",
+				"paddingLeft": "50px"
+			})
+			$("#all-select-right").css({
+				"display": "none"
+			})
+		}, 200)
+		$("#page-index #loadingToast").css({
+			"display": "block"
+		});
+		addItems(itemsPerLoad, 0, data);
+	}
+
+	function clickLeftAnimate() {
+		clearTimeout(tt);
+		$("#page-index #all-select-right li").css({
+			"opacity": "0",
+			"paddingLeft": "50px"
+		})
+		$("#page-index #all-select-right").css({
+			"display": "block"
+		})
+		tt = setTimeout(function() {
+			$("#page-index #all-select-right li").css({
+				"opacity": "1",
+				"paddingLeft": "8px"
+			})
+		}, 200)
+	}
+
+	function addItems(number, lastIndex, data) {
+		var html = '';
+		$('.infinite-scroll-preloader').css({
+			"display": "none"
+		});
+		var gettpl = document.getElementById('storetemid').innerHTML;
+		laytpl(gettpl).render(data, function(html) {
+			$('.infinite-scroll-bottom .list-container').append(html);
+			loading = false;
+		});
+		if(data.length == 0) {
+			if(!nothing) {
+				var nothing_html = "<li><div style='padding-top:1px'>" +
+					'<div class="weui-loadmore weui-loadmore_line"><span style="background-color: #efeff4;" class="weui-loadmore__tips">暂无更多数据</span></div></div></li>';
+				$('.infinite-scroll-bottom .list-container').append(nothing_html);
+				nothing = true;
+				endmark = 0;
+			}
+		}
+		page++;
+	}
+
+	/*****************/
+	/*点击元素背景变暗效果*/
+	$(".sherry-click").on('touchstart', function() {
+		$(this).css({
+			"backgroundColor": "#e6e6e6"
+		});
+	})
+	$(".sherry-click").on('touchend', function() {
+		$(this).css({
+			"backgroundColor": "#fff"
+		});
+	})
+
+	function repeatLi(left_html, left_data, left, all) {
+		left_html += "<li class='all-select-li' data-id=''><em>" + all + "</em><li/>";
+		$("#page-index " + left).html("");
+		for(var i = 0; i < left_data.length; i++) {
+			//查询条件左边html代码
+			left_html += "<li class='all-select-li' data-id=" + left_data[i].id + "><em>" + left_data[i].name + "</em><li/>"
+		}
+		left_html += "<li class='all-select-li-disable'><li/>"
+		$("#page-index " + left).append(left_html);
+	}
+
+	function switchIcon(id) {
+		$('#' + id).css({
+			"webkitTransition": "all .3s linear",
+			"transition": "all .3s linear"
+		})
+		setTimeout(function() {
+			$('#' + id).css({
+				"transform": "rotate(180deg)",
+				"webkitTransform": "rotate(180deg)"
+			}, 50)
+		})
+	}
+
+	function switchIcon2(id) {
+		$('#' + id).css({
+			"webkitTransition": "all .3s linear",
+			"transition": "all .3s linear",
+			"transform": "rotate(180deg)",
+			"webkitTransform": "rotate(180deg)"
+		})
+		setTimeout(function() {
+			$('#' + id).css({
+				"transform": "rotate(0deg)",
+				"webkitTransform": "rotate(0deg)"
+			}, 50)
+		})
+
+	}
+
+	function resetSwitchIcon() {
+		$('#all-type-icon').css({
+			"transform": "rotate(0deg)",
+			"webkitTransform": "rotate(0deg)"
+		})
+		$('#all-nearby-icon').css({
+			"transform": "rotate(0deg)",
+			"webkitTransform": "rotate(0deg)"
+		})
+		$('#all-city-icon').css({
+			"transform": "rotate(0deg)",
+			"webkitTransform": "rotate(0deg)"
+		})
+	}
+	//以上为定义的全局函数 ， 下面是操作方法	
+
+	$("#page-index #all-type").click(function() {
+		resetSwitchIcon();
+		nothing = false;
+		//重置页面数
+		page = 1;
+		endmark = 1;
+		ajaxGetFn({
+			url: "{php echo app_url('store/merchant/getcategory')}",
+			fn: function(left_data) {
+				console.log(left_data);
+				var left_html = '';
+				switchIcon('all-type-icon');
+				repeatLi(left_html, left_data, "#all-select-left", "全部分类");
+				$("#page-index #all-select-left .all-select-li").click(function() {
+						var type_name = $(this).children("em").text();
+						var type_right_id = $(this).attr("data-id");
+						//点击列表项高亮背景颜色
+						$("#page-index #all-select-left .all-select-li").css({color:"#777"})
+						$(this).css({color:"#ff512f"})
+						cid = $(this).attr("data-id");
+						ajaxGetFn({
+							url: "{php echo app_url('store/merchant/getcategory')}" + "pid=" + cid,
+							fn: function(right_data) {
+								var right_html = '';
+								if (type_right_id=='') {
+									repeatLi(right_html, [], "#all-select-right", "全部分类");
+								}else{
+									repeatLi(right_html, right_data, "#all-select-right", "全部 ("+type_name+")");
+								}
+								/*按条件加载数据*/
+								$("#page-index #all-select-right .all-select-li").click(function() {
+									var type_right_name = $(this).children("em").text();
+									$('.infinite-scroll-bottom .list-container').html("");
+									page = 1;
+									type_right_id = $(this).attr("data-id");
+									$("#all-type").attr("data-id", type_right_id);
+									pid = $("#all-type").attr("data-id");
+									distid = $("#all-city").attr("data-id")
+									ajaxGetFn({
+										url: "{php echo app_url('wlcoupon/coupon_app/getstore')}" + "pid=" + pid +"&cid="+ cid  + "&distid=" + distid + "&page=" + page + "&lng=" + longitude + "&lat=" + latitude,
+										fn: function(type_data) {
+											listData = type_data;
+											if(type_right_name != "全部") {
+												$("#all-type").attr("data-id", type_right_id);
+												$("#all-type").children("em").text(type_right_name);
+											} else {
+												$("#all-type").attr("data-id", type_right_id);
+												$("#all-type").children("em").text(type_name);
+											}
+											switchIcon2('all-type-icon');
+											sessionStorage.setItem("demokey",JSON.stringify(type_data));
+											var contentdata = type_data.slice(0,pagesize);
+											resetLoadFn(contentdata);
+										}
+									})
+								})
+								clickLeftAnimate();
+							}
+						})
+					})
+					//打开下拉选项
+				openSelectFn();
+			}
+		})
+	})
+	var city_id = '';
+	var city_name = '';
+	//按城市查询
+	$("#page-index #all-city").click(function() {
+			resetSwitchIcon();
+			nothing = false;
+			page = 1;
+			endmark = 1;
+			ajaxGetFn({
+				url: "{php echo app_url('store/merchant/getarea')}",
+				fn: function(left_data) {
+					var left_html = '';
+					switchIcon('all-city-icon');
+					repeatLi(left_html, left_data, "#all-select-left", "全城")
+						/*按条件加载数据*/
+					$("#page-index #all-select-left .all-select-li").click(function() {
+						city_name = $(this).children("em").text();
+						city_id = $(this).attr("data-id");
+						$('.infinite-scroll-bottom .list-container').html("");
+						$("#all-city").attr("data-id", city_id);
+						pid = $("#all-type").attr("data-id");
+						distid = $("#all-city").attr("data-id")
+						ajaxGetFn({
+							url: "{php echo app_url('wlcoupon/coupon_app/getstore')}" + "pid=" + pid+"&cid="+ cid + "&distid=" + distid + "&page=" + page + "&lng=" + longitude + "&lat=" + latitude,
+							fn: function(city_data) {
+								listData = city_data;
+								$("#all-city").children("em").text(city_name);
+								switchIcon2('all-city-icon');
+								sessionStorage.setItem("demokey",JSON.stringify(city_data));
+								var contentdata = city_data.slice(0,pagesize);
+								resetLoadFn(contentdata);
+							}
+						})
+					})
+					//打开下拉选项
+					openSelectFn();
+				}
+			})
+
+		})
+		//按距离查询
+	$("#page-index #all-nearby").click(function() {
+		resetSwitchIcon();
+		switchIcon('all-nearby-icon');
+		var left_html = '';
+		var nearby_data = []
+		page = 1;
+		endmark = 1;
+		nothing = false;
+		repeatLi(left_html, nearby_data, "#all-select-left", "附近优先");
+		/*按条件加载数据*/
+		$("#page-index #all-select-left .all-select-li").click(function() {
+			var nearby_name = $(this).children("em").text();
+			var nearby_id = $(this).attr("data-id");
+			$("#all-nearby").attr("data-id", nearby_id);
+			$('.infinite-scroll-bottom .list-container').html("");
+			ajaxGetFn({
+				url: "{php echo app_url('wlcoupon/coupon_app/getstore')}" + "pid=" + pid +"&cid="+ cid  + "&distid=" + distid + "&page=" + page + "&lng=" + longitude + "&lat=" + latitude,
+				fn: function(nearby_data) {
+					listData = nearby_data;
+					$("#all-nearby").children("em").text(nearby_name);
+					switchIcon2('all-nearby-icon');
+					sessionStorage.setItem("demokey",JSON.stringify(nearby_data));
+					var contentdata = nearby_data.slice(0,pagesize);
+					resetLoadFn(contentdata);
+				}
+			})
+		})
+		//打开下拉选项
+		openSelectFn();
+	})
+	$(document).on('infinite', '.infinite-scroll-bottom', function() {
+		if(loading) return;
+		loading = true;
+		if(endmark){
+			$('.infinite-scroll-preloader').show();
+			setTimeout(function() {
+				var dt = JSON.parse(sessionStorage.getItem("demokey"));
+				var xxx = dt.slice((page-1)*pagesize ,(page-1)*pagesize+pagesize);
+				resetLoadFn(xxx);
+			}, 800);
+		}
+	});
+	//关闭条件查询
+	$(".close-all-select").click(function() {
+		closeSelectFn();
+	})
+	$(".select-modal").click(function() {
+		closeSelectFn();
+	})
+	$.init();
+</script>
+{php include wl_template('common/footer');}

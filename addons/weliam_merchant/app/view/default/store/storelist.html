@@ -1,0 +1,24 @@
+{php include wl_template('common/header');}
+<div class="page-group" >
+    <div class="page page-current">
+    	{php include wl_template('common/rightnav');}
+		<div class="content native-scroll">
+			{loop $stores $store}
+			<div class="weui-cells__title">{$store['realname']}</div>
+	        <div class="list-block">
+		      <ul>
+		        <li>
+		        	<a href="{php echo app_url('store/supervise/switchstore',array('storeid'=>$store['id']))}" class="item-link item-content">
+		        		<div class="item-media"><img src="{php echo tomedia($store['logo'])}" style="width: 1.45rem;height: 1.45rem;"></div>
+		              	<div class="item-inner">
+		                	<div class="item-title">{$store['storename']}</div>
+		              	</div>
+		           	</a>
+		        </li>
+		      </ul>
+		    </div>
+		    {/loop}
+		</div>
+	</div>
+</div>
+{php include wl_template('common/footer');}

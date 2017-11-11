@@ -1,0 +1,36 @@
+{php include wl_template('common/header');}
+<ul class="nav nav-tabs">
+	<li class="active"><a href="#">VIP开通记录</a></li>
+</ul>
+<div class="main">
+	<div class="panel panel-default">
+		<div class="panel-body table-responsive">
+			<table class="table table-hover">
+				<thead class="navbar-inner">
+					<tr>
+						<th style="width:120px;">用户mid</th>
+						<th style="width:120px;">粉丝信息</th>
+						<th style="width:180px;">开通时长</th>
+						<th style="width:180px;">所属地区</th>
+						<th style="width:100px;">本次到期时间</th>
+						<th style="width:100px;">充值时间</th>
+					</tr>
+				</thead>
+				<tbody>
+					{loop $vipRecord[0] $item1}
+					<tr>
+						<td>{$item1['mid']}</td>
+						<td>{$item1['member']['nickname']}<br>{$item1['member']['realname']}<br>{$item1['member']['mobile']}</td>
+						<td><span style="color: #F26C4F;font-size: 20px;"><b>+</b>{$item1['howlong']} 月</span></td>
+						<td>{$item1['areaName']}</td>
+						<td>{php echo date("Y-m-d",$item1['limittime']);}</td>
+						<td>{php echo date("Y-m-d",$item1['createtime']);}</td>
+					</tr>
+					{/loop}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	{$pager}
+</div>
+{php include wl_template('common/footer');}

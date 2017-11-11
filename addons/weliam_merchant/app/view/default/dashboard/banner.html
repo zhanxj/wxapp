@@ -1,0 +1,15 @@
+{if $data['banner']}
+<div class="banner" id="banner" style="visibility: visible;">
+    <ul class="imgs">
+    	{loop $data['banner'] $ban}
+    	<li {if !empty($ban['link'])}onclick="document.location = '{$ban['link']}'"{/if}>
+    		<img src="{php echo tomedia($ban['thumb'])}" style="display: block;">
+    	</li>
+    	{/loop}
+    </ul>
+</div>
+<div class="emptyblank"></div>
+<style>
+.banner img{width: 100%;}
+</style>
+{/if}

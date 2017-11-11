@@ -1,0 +1,119 @@
+{php include wl_template('common/header');}
+<ul class="nav nav-tabs">
+	<li {if $_GPC['enabled']==1 }class="active"{/if}><a href="{php echo web_url('store/merchant/index',array('enabled'=>1));}">入驻中<span class="label label-warning pull-right" style="margin-left: 10px;">{$status1}</span></a></li>
+	<li {if $_GPC['enabled']==='0' }class="active"{/if}><a href="{php echo web_url('store/merchant/index',array('enabled'=>0));}">待入驻<span class="label label-warning pull-right" style="margin-left: 10px;">{$status0}</span></a></li>
+	<li {if $_GPC['enabled']==2 }class="active"{/if}><a href="{php echo web_url('store/merchant/index',array('enabled'=>2));}">暂停中<span class="label label-warning pull-right" style="margin-left: 10px;">{$status2}</span></a></li>
+	<li {if $_GPC['enabled']==3 }class="active"{/if}><a href="{php echo web_url('store/merchant/index',array('enabled'=>3));}">已到期<span class="label label-warning pull-right" style="margin-left: 10px;">{$status3}</span></a></li>
+	<li {if $_GPC['enabled']==4 }class="active"{/if}><a href="{php echo web_url('store/merchant/index',array('enabled'=>4));}">垃圾箱<span class="label label-warning pull-right" style="margin-left: 10px;">{$status4}</span></a></li>
+</ul>
+<div class="panel">
+	    <div class="panel-body">
+            <form action="" method="get" class="form-horizontal" role="form" id="form1">
+                <input type="hidden" name="c" value="site" />
+	            <input type="hidden" name="a" value="entry" />
+	            <input type="hidden" name="m" value="weliam_merchant" />
+	            <input type="hidden" name="p" value="store" />
+				<input type="hidden" name="ac" value="merchant" />
+				<input type="hidden" name="do" value="index" />
+                <div class="form-group">
+                    <div class="col-md-12 pull-right">
+						<div class="input-group">
+							<input type="text" name="keyword" class="form-control" value="{$_GPC['keyword']}"  placeholder="可查询 商户ID / 商户名称 / 商户联系人名称 / 商户联系人电话"/>
+							<span class="input-group-addon" id="search">搜索</span>
+						</div>
+					</div>
+				</div>
+            </form>
+	    </div>
+	</div>
+	<script type="text/javascript">
+		$("#search").click(function(){
+			$('#form1')[0].submit();
+		});
+	</script>
+<div class="main panel panel-default">
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th style="width:50px;text-align:center;">ID</th>
+					
+					<th style="width:150px;">商户名称</th>
+					<th style="width:150px;text-align:center;">联系人</th>
+					<th style="width:150px;text-align:center;">所属类别</th>
+					<th style="width:150px; text-align:center;">申请时间<br>到期时间</th>
+					<th style="width:100px; text-align:center;">现在状态</th>
+					<th style="width:180px; text-align:center">操作</th>
+				</tr>
+			</thead>
+			<tbody >
+				{loop $stores $user}
+				<tr >
+					<td style="text-align:center;">{$user['id']}</td>
+					<td><img class="scrollLoading" src="{IMAGE_PIXEL}" data-url="{$user['logo']}" onerror="this.src='{IMAGE_NOPIC_SMALL}'" height="50" width="50"/>
+					{$user['storename']}
+					</td>
+					<td class="text-center">
+						{$user['realname']}
+						<br>
+						<label class="label label-default label-info">{$user['tel']}</label>
+					</td>
+					<td class="text-center">
+						<label class="label label-default label-success">{$user['onelevel']}</label>
+						<label class="label label-default label-danger">{$user['twolevel']}</label>
+						
+					</td>
+					<td class="text-center">
+						{php echo date('Y年m月d日',$user['createtime'])}<br>
+						{php echo date('Y年m月d日',$user['endtime'])}
+					</td>
+					<td class="text-center">
+						{if $user['enabled']==0}<label class="label label-primary">待入住</label>
+						{elseif $user['enabled']==1}<label class="label label-success">入住中</label>
+						{elseif $user['enabled']==2}<label class="label label-warning">暂停中</label>
+						{elseif $user['enabled']==3}<label class="label label-danger">已到期</label>
+						{elseif $user['enabled']==4}<label class="label label-danger">可彻底删除</label>
+						{/if}
+					</td>
+					<td class="text-center">
+						<a href="{php echo web_url('store/merchant/edit',array('id'=>$user['id']))}" class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="详情">
+							<i class="fa fa-cog fa-spin"></i>
+						</a>
+						-
+						{if $user['enabled']!=4}
+						<a href="{php echo web_url('store/merchant/delete',array('id'=>$user['id']))}"class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="删除">
+							删除
+						</a>
+						{else}
+						<a href="{php echo web_url('store/merchant/sureDelete',array('id'=>$user['id']))}"class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="彻底删除">
+							彻底删除
+						</a>
+						{/if}
+						-
+						<a href="{php echo web_url('store/merchant/account',array('id'=>$user['id']))}"class="btn btn-default btn-sm" data-toggle="tooltip" data-placement="top" title="财务">
+							财务
+						</a>
+					</td>
+				</tr>
+				{/loop}
+			</tbody>
+		</table>
+	</div>
+</div>
+{$pager}
+<script type="text/javascript">
+	$(function(){
+		$(".scrollLoading").scrollLoading();
+		var $pop = null;
+		$('.scrollLoading').hover(function(){
+			var img = $(this).attr('src');
+			var obj = this;
+			var $pop = util.popover(obj, function($popover, obj){
+				obj.$popover = $popover;
+			}, '<div><img src="'+img+'" style="max-width:200px; max-height:200px;"></div>');
+		}, function(){
+			this.$popover.remove();
+		});
+	});
+</script>
+{php include wl_template('common/footer');}

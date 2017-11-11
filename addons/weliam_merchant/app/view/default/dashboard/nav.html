@@ -1,0 +1,45 @@
+{if $data['nav']}
+{php $indexnav = array_chunk($data['nav'],8,true);}
+<div id="indexnav">
+	<div class="swiper-container" id="indexnavswiper">
+	    <div class="swiper-wrapper">
+	    	{loop $indexnav $datanav}
+	    	<div class="swiper-slide">
+				<div class="j-rmd-types rmd-types">
+					{loop $datanav $itme}
+				    <a href="{$itme['link']}" class="external">
+				        <img src="{php echo tomedia($itme['thumb']);}" alt="">
+				        <span>{$itme['name']}</span>
+				    </a>
+				    {/loop}
+				</div>
+			</div>
+			{/loop}
+		</div>
+		{if count($data['nav']) > 8}
+		<div class="swiper-pagination"></div>
+		{/if}
+	</div>
+</div>
+<style>
+.rmd-types{overflow:hidden;background:#fff;padding-bottom:12px;}
+.rmd-types a{float:left;width:25%;padding-top:16px;}
+.rmd-types a img{display:block;width:40px;height:40px;margin:0 auto 12px;}
+.rmd-types a span{display:block;line-height:1em;text-align:center;font-size:12px;color:#2f2f2f;}
+.rmd-types .cur{color: #EF4F4F;}
+#indexnav{background-color: white;padding-bottom: 10px;}
+#indexnav .swiper-pagination{bottom: 0;}
+#indexnav .swiper-pagination-bullet-active{background-color: #06C1AE;}
+</style>
+<script>
+var swiper = new Swiper('#indexnavswiper', {
+    autoplay: 0,
+    autoplayDisableOnInteraction : false,
+    setWrapperSize:true,
+    {if count($data['nav']) > 8}
+    pagination: '.swiper-pagination',
+    paginationClickable: true
+    {/if}
+});
+</script>
+{/if}

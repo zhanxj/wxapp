@@ -1,0 +1,60 @@
+{php include wl_template('common/header');}
+<ul class="nav nav-tabs">
+	<li ><a href="{php echo web_url('dashboard/nav/index')}">导航栏</a></li>
+	<li {if empty($nav['id'])}class="active"{/if}><a href="{php echo web_url('dashboard/nav/edit')}">添加导航</a></li>
+	{if !empty($nav['id'])}
+	<li class="active"><a href="#">编辑导航</a></li>
+	{/if}
+</ul>
+<div class="main">
+	<form action="" method="post" class="layui-form" enctype="multipart/form-data" >
+		<input type="hidden" name="id" value="{$nav['id']}" />
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				导航栏设置
+			</div>
+			<div class="panel-body">
+				<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">排序</label>
+		    		<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 layui-input-block">
+		      			<input type="text" name="nav[displayorder]"   placeholder="默认排序为0" class="layui-input" value="{$nav['displayorder']}" >
+		    		</div>
+		  		</div>
+		  		<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">导航栏标题<span class="must-fill">*</span></label>
+		    		<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 layui-input-block">
+		      			<input type="text" name="nav[name]" required  lay-verify="required"  autocomplete="off" class="layui-input" value="{$nav['name']}" >
+		    		</div>
+		  		</div>
+		  		<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">导航栏图片<span class="must-fill">*</span></label>
+		    		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-7 layui-input-block">
+		      			{php echo tpl_form_field_image('nav[thumb]', $nav['thumb'])}
+		      			<span class="help-block">建议图片大小80*80</span>
+		    		</div>
+		  		</div>
+		  		<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">导航栏连接</label>
+		    		<div class="col-xs-12 col-sm-9 col-md-8 col-lg-7 layui-input-block">
+		      			<input type="text" name="nav[link]" class="layui-input" value="{$nav['link']}" >
+		    		</div>
+		  		</div>
+		  		<div class="layui-form-item">
+		    		<label class="col-xs-12 col-sm-3 col-md-2 layui-form-label">是否显示</label>
+		    		<div class="col-xs-12 col-sm-8 col-md-8 col-lg-7 layui-input-block">
+		      			<input type="radio" name='enabled' value='1' {if $nav['enabled']==1}checked{/if} title="是">
+      					<input type="radio" name='enabled' value='0' {if $nav['enabled']==0}checked{/if} title="否">
+		    		</div>
+		  		</div>
+			</div>
+		</div>
+		<div class="form-group col-sm-12">
+			<input type="submit" name="submit" lay-submit value="提交" class="btn btn-primary col-lg-1" />
+			<input type="hidden" name="token" value="{$_W['token']}" />
+		</div>
+	</form>
+</div>
+<script>
+	$('input[name="nav[thumb]"]').attr('required','required');
+</script>
+{php include wl_template('common/footer');}

@@ -1,0 +1,70 @@
+<!--<span class="tag tag-red">抢</span>
+	<span class="tag tag-orange">折</span>
+	<span class="tag tag-violet">折</span>
+	<span class="tag tag-pink">折</span>
+	<span class="tag tag-deepred">折</span>
+	<span class="tag tag-yellow">折</span>
+	<span class="tag tag-aqua">折</span>-->
+<style>
+.clearborder::after{background-color: rgba(231, 231, 231, 0)!important;}
+.clearborder::before{background-color: rgba(231, 231, 231, 0)!important;}
+.actives{position: relative;left: -0.1rem;margin-top: 0.2rem;}
+.actives span {display: inline-block;font: inherit;color:#fff;font-size:0.6rem;width:0.8rem;height:0.8rem;line-height:0.8rem;margin-left:0.25rem;margin-right:0.25rem;border-radius:.1rem;text-align:center}
+.actives .ka {background-color:#c8b39a;}
+.actives .qiang {background-color:#FF6C6B;}
+.actives .hui {background-color:#ff8400;}
+.hideactive{display: none;}
+.moreicon{position: absolute;top: 2.6rem;right: .3rem;display: inline-block;padding-left: 1rem;padding-right: .2rem;padding-top: 1rem;padding-bottom: 1rem;}
+#storeview .item-link .item-inner{background-size: 0;padding-right: 0.5rem;}
+</style>
+<div class="list-block">
+	<ul class="clearborder">
+		<li>
+			<a class="item-content item-link" href="{php echo app_url('store/merchant')}">
+				<div class="item-media"><i class="icon iconfont icon-shopfill" style="color: #06C1AE;"></i></div>
+				<div class="item-inner">
+					<div class="item-title" style="color: #06C1AE;font-size: .7rem;">附近商家</div>
+				</div>
+			</a>
+		</li>
+	</ul>
+</div>
+<div class="list-block media-list">
+	<ul id="storeview"></ul>
+	<div style="text-align: center;height: 2.2rem;line-height: 2.2rem;background-color: white;">
+		<a href="{php echo app_url('store/merchant')}" style="color: #929292;">查看更多</a>
+	</div>
+</div>
+<div class="emptyblank"></div>
+<script id="nearbyId" type="text/html">
+	{{# for(var i = 0, len = d.length; i < Math.min(5,len); i++){ }}
+	<li>
+		<a href="{{ d[i].url }}" class="item-link item-content">
+			<div class="item-media" style="width: 3.5rem;height: 1rem;">
+				<img src="{{ d[i].logo }}" style='width: 3.5rem;height: 2.625rem;position: absolute;top: .75rem;'>
+			</div>
+			<div class="item-inner">
+				<div class="item-title-row">
+					<div class="item-title">{{ d[i].storename }}</div>
+					<div class="item-after" style="color: #06C1AE;">{{ d[i].distance }}</div>
+				</div>
+				<div class="item-subtitle" style="font-size: .65rem;color: #929292;">{{ d[i].storehours }}</div>
+				<div class="item-subtitle" style="font-size: .65rem;color: #929292;">{{ d[i].cate }}</div>
+				{{# if(d[i].halfcard){ }}
+				<div class="item-subtitle actives" style="font-size: .65rem;color: #929292;"><span class="ka">卡</span>{{ d[i].halfcard }}</div>
+				{{# } }}
+				{{# if(d[i].rush.length){ }}
+				{{# for(var y = 0,len1 = d[i].rush.length; y < Math.min(d[i].rushnum,len1) ; y++){ }}
+				<div class="item-subtitle actives" style="font-size: .65rem;color: #929292;"><span class="qiang">抢</span>{{ d[i].rush[y].name }}</div>
+				{{# } }}
+				{{# } }}
+				{{# if(d[i].coupon.length){ }}
+				{{# for(var w = 0,len2 = d[i].coupon.length; w < Math.min(d[i].couponnum,len2) ; w++){ }}
+				<div class="item-subtitle actives" style="font-size: .65rem;color: #929292;"><span class="hui">券</span>{{ d[i].coupon[w].title }}</div>
+				{{# } }}
+				{{# } }}
+			</div>
+		</a>
+	</li>
+	{{# } }}
+</script>

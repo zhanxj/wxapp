@@ -1,0 +1,89 @@
+{php include wl_template('common/header');}
+    <link href="../addons/weliam_merchant/app/resource/css/comment/comm1.css" rel="stylesheet" type="text/css">
+    <link href="../addons/weliam_merchant/app/resource/css/comment/single.css" rel="stylesheet" type="text/css">
+    <link href="../addons/weliam_merchant/app/resource/css/comment/comm.css" rel="stylesheet" type="text/css">
+    <link href="../addons/weliam_merchant/app/resource/css/comment/common.css" rel="stylesheet" type="text/css">
+	<div class="page-group">
+	    <div class="page page-current" id="share-list">
+	    	<div class="content infinite-scroll native-scroll"  data-distance="0">
+	    		<form action="{php echo app_url('store/merchant/comment')}" enctype="multipart/form-data" id="form" method="post">
+	    		<div class="h5-1yyg-v1">
+			    	<section class="clearfix g-share-ct">
+			            <div id="m-share-fixed" class="m-share-fixed">
+			            	<article id="m-share-comment" class="m-share-comment m-round">
+			                <div class="field">
+								<div class="field-head">
+									<span class="field-head-name"><i class="icon iconfont icon-shop"></i> {$order['merchantName']}</span>
+							  		<span class="field-head-status field-head-status-light">
+							  			已消费
+							    </div>
+							    <a class="field-item" href="{{ d.data[i].a }}">
+							     	<div class="avatar">
+							      		<img src="{$order['gimg']}" class="j-avatar-img avatar-img">
+							        </div>
+							        <div class="contentt">
+								        <p class="delivery_tip">{$order['gname']}</p>
+								        <p class="order-time">{php echo date('Y-m-d H:i:s',$order['paytime'])}</p>
+							        	<p class="price">￥ {$order['price']}</p>
+							        </div>
+							    </a>
+							</div>
+			            </article>
+			            <article id="m-share-comment" class="m-share-comment m-round">
+				                <div id="CommentNav"> 
+				                	<div class="m-share-btn">
+			                    	总体评价
+			                    	</div>
+				                    <div class="m-comment">
+				                        <div class="u-comment ">
+				                            <textarea name="comment" id="comment" rows="3" class="z-comment-txt" placeholder="说点什么吧！" style="color:#bbbbbb"></textarea>
+				                        </div>
+				                         <div class="weui-cell">
+			                <div class="weui-cell__bd">
+			                    <div class="weui-uploader">
+			                        <div class="weui-uploader__hd">
+			                            <p class="weui-uploader__title">商品图片</p>
+			                            <div class="weui-uploader__info"></div>
+			                        </div>
+			                        <div class="weui-uploader__bd">
+			                            <ul class="weui-uploader__files upload_images_views" style="margin-left: -45px;">
+			                            </ul>
+			                            <div class="weui-uploader__input-box upload_btn">
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+				                        <div class="u-Btn">
+				                            <div class="u-Btn-li"><a id="btnPublish" href="javascript:;" class="z-DefineBtn">发表</a></div>
+				                        </div>
+				                    </div>
+				                </div>
+			                </article>
+			            </div>
+			            
+			    	</section>
+				</div>
+				 <input type="hidden" name="token" value="{$_W['token']}" value="" />
+			    <input type="hidden" name="id" value="{$order['id']}"  />
+			    <input type="hidden" name="type" value="rush"  id="f"/>
+	    		</form>
+	    	</div>
+	    </div>
+	</div>
+<script>
+function fun(){
+	var images = $("input[name*='images']").val();
+	if(images=='undefined' || images==null || images==[]){ $.toast('至少上传张图片吧！');return false;}
+	$('#form').submit()
+}
+common.uploadImageByWxJs(1);
+common.deleteImagesInWxJs();
+	$('#btnPublish').click(function(){
+		var content = $('#comment').val();
+		var orderid = "{$order['id']}";
+		if(!content) {$.toast('请填写评价!');return false;}
+		$("#form").submit();
+	});
+</script>
+{php include wl_template('common/footer');}

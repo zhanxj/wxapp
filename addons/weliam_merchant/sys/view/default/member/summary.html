@@ -1,0 +1,280 @@
+{php include wl_template('common/header');}
+<script src="{URL_WEB_JS}echarts-all.js"></script>
+<div class="row">
+    <div class="col-md-2" style="padding-left: 0;padding-right: 0;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!--<span class="label label-success pull-right">月</span>-->
+                <h5>今日新增Vip会员</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins text-success">{$today[1]}</h1>
+                <div class="stat-percent font-bold text-success">{php echo number_format(($today[1]/$members)*100,2)}% <i class="fa fa-level-up"></i>
+                </div>
+                <small>新增Vip会员</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2" style="padding-left: 0;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!--<span class="label label-success pull-right">月</span>-->
+                <h5>今日新增粉丝</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins text-danger">{$today[0]}</h1>
+                <div class="stat-percent font-bold text-danger">{php echo number_format(($today[0]/$allfans)*100,2)}%<i class="fa fa-level-up"></i>
+                </div>
+                <small>新增粉丝</small>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2" style="padding-right: 0;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!--<span class="label label-danger pull-right">月</span>-->
+                <h5>昨日新增Vip会员</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins text-success">{$yesterday[1]}</h1>
+                <div class="stat-percent font-bold text-success">{php echo number_format(($yesterday[1]/$members)*100,2)}% <i class="fa fa-level-up"></i>
+                </div>
+                <small>新增Vip会员</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2" style="padding-left: 0;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!--<span class="label label-danger pull-right">月</span>-->
+                <h5>昨日新增粉丝</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins text-danger">{$yesterday[0]}</h1>
+                <div class="stat-percent font-bold text-danger">{php echo number_format(($yesterday[0]/$allfans)*100,2)}% <i class="fa fa-level-up"></i>
+                </div>
+                <small>新增粉丝</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2" style="padding-right: 0;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!--<span class="label label-danger pull-right">月</span>-->
+                <h5>过去七天新增Vip会员</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins text-success">{$week[1]}</h1>
+                <div class="stat-percent font-bold text-success">{php echo number_format(($week[1]/$members)*100,2)}% <i class="fa fa-level-up"></i>
+                </div>
+                <small>新增Vip会员</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2" style="padding-right: 0;padding-left: 0;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <!--<span class="label label-danger pull-right">月</span>-->
+                <h5>过去七天新增粉丝</h5>
+            </div>
+            <div class="ibox-content">
+                <h1 class="no-margins text-danger">{$week[0]}</h1>
+                <div class="stat-percent font-bold text-danger">{php echo number_format(($week[0]/$allfans)*100,2)}%<i class="fa fa-level-up"></i>
+                </div>
+                <small>新增粉丝</small>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="order-overview">
+	 <div class="col-sm-6" style="padding-left: 0px;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="echarts" id="echarts-line-chart"  style="width: 513px; height: 240px;"></div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(function() {
+    	var num = {php echo json_encode($wek_num)};
+		var e = echarts.init(document.getElementById("echarts-line-chart")),
+			a = {
+				title: {
+					text: "本周会员Vip新增走势"
+				},
+				tooltip: {
+					trigger: "axis"
+				},
+				legend: {
+					data: ["新增会员"]
+				},
+				grid: {
+					x: 40,
+					x2: 40,
+					y2: 24
+				},
+				calculable: !0,
+				xAxis: [{
+					type: "category",
+					boundaryGap: !1,
+					data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
+				}],
+				yAxis: [{
+					type: "value",
+					axisLabel: {
+						formatter: "{value}"
+					}
+				}],
+				series: [{
+					name: "新增会员",
+					type: "line",
+					data: num,
+					markPoint: {
+						data: [{
+							type: "max",
+							name: "最大值"
+						}, {
+							type: "min",
+							name: "最小值"
+						}]
+					}
+				}]
+			};
+		e.setOption(a), $(window).resize(e.resize);
+});
+</script>
+<div class="col-sm-6" style="padding-left: 0px;padding-right: 0px;" >
+    <div class="ibox float-e-margins">
+        <div class="ibox-content">
+            <div class="echarts" id="echarts-pie-chart" style="width: 513px; height: 240px;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		var l = echarts.init(document.getElementById("echarts-pie-chart")),
+			u = {
+				title: {
+					text: "会员等级",
+					subtext: "{$time}",
+					x: "center"
+				},
+				tooltip: {
+					trigger: "item",
+					formatter: "{a} <br/>{b} : {c} ({d}%)"
+				},
+				legend: {
+					orient: "vertical",
+					x: "left",
+					data: ["Vip1", "Vip2", "Vip3", "非Vip会员"]
+				},
+				calculable: !0,
+				series: [{
+					name: "会员构成成分",
+					type: "pie",
+					radius: "55%",
+					center: ["50%", "60%"],
+					data: [{
+						value: {$vip[1]},
+						name: "Vip1"
+					}, {
+						value: {$vip[2]},
+						name: "Vip2"
+					}, {
+						value: {$vip[3]},
+						name: "Vip3"
+					}, {
+						value: {$vip[0]},
+						name: "非Vip会员"
+					}]
+				}]
+			};
+		l.setOption(u), $(window).resize(l.resize);
+	})
+</script>
+</div>
+<div class="col-sm-12" style="padding-left: 0px;padding-right: 0px;">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+
+                <div class="echarts" id="echarts-bar-chart" style="width: 1145px; height: 440px;"></div>
+            </div>
+        </div>
+    </div>
+<script type="text/javascript">
+	$(function(){
+		var num = {php echo json_encode($mon_num)};
+    	var money = {php echo json_encode($noVipMembers)};
+		var t = echarts.init(document.getElementById("echarts-bar-chart")),
+		n = {
+			title: {
+				text: "{php echo date('Y',time()) }"+"年会员情况"
+			},
+			tooltip: {
+				trigger: "axis"
+			},
+			legend: {
+				data: ["Vip会员数量", "总会员数量"]
+			},
+			grid: {
+				x: 30,
+				x2: 40,
+				y2: 24
+			},
+			calculable: !0,
+			xAxis: [{
+				type: "category",
+				data: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"]
+			}],
+			yAxis: [{
+				type: "value"
+			}],
+			series: [{
+				name: "Vip会员数量",
+				type: "bar",
+				data: num,
+				markPoint: {
+					data: [{
+						type: "max",
+						name: "最大值"
+					}, {
+						type: "min",
+						name: "最小值"
+					}]
+				},
+				markLine: {
+					data: [{
+						type: "average",
+						name: "平均值"
+					}]
+				}
+			}, {
+				name: "总会员数量",
+				type: "bar",
+				data: money,
+				markPoint: {
+					data: [{
+						type: "max",
+						name: "年最高",
+						xAxis: 7,
+						yAxis: 183,
+					}, {
+						type: "min",
+						name: "年最低",
+						xAxis: 11,
+						yAxis: 3
+					}]
+				},
+				markLine: {
+					data: [{
+						type: "average",
+						name: "平均值"
+					}]
+				}
+			}]
+		};
+	t.setOption(n), window.onresize = t.resize;
+	});
+</script>
+{php include wl_template('common/footer');}
